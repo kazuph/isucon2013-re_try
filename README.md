@@ -31,6 +31,7 @@
 
 ### 便利コマンドをbashrcに追加
 
+```
 cat <<EOF >> .bashrc
 alias st="sudo supervisorctl status"
 alias re="sudo supervisorctl restart isucon_ruby"
@@ -40,6 +41,7 @@ alias b2="sudo isucon3 benchmark --workload 2"
 alias b3="sudo isucon3 benchmark --workload 3"
 alias b4="sudo isucon3 benchmark --workload 4"
 EOF
+```
 
 ### 実行したコメントメモ
 
