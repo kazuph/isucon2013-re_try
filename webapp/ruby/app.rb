@@ -37,7 +37,7 @@ class Isucon3App < Sinatra::Base
         user = $users[user_id]
         unless user
           mysql = connection
-          user = mysql.xquery("SELECT * FROM users WHERE id=?", user_id).first
+          user = mysql.xquery("SELECT id, username FROM users WHERE id=?", user_id).first
           $users[user_id] = user;
         end
       end
@@ -144,7 +144,7 @@ class Isucon3App < Sinatra::Base
       session.clear
       session["user_id"] = user["id"]
       session["token"] = Digest::SHA256.hexdigest(Random.new.rand.to_s)
-      mysql.xquery("UPDATE users SET last_access=now() WHERE id=?", user["id"])
+      # mysql.xquery("UPDATE users SET last_access=now() WHERE id=?", user["id"])
       redirect "/mypage"
     else
       erb :signin, :layout => :base, :locals => {
