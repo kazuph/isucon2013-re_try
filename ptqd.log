@@ -1,142 +1,57 @@
 
-# 18.8s user time, 380ms system time, 41.63M rss, 318.66M vsz
-# Current date: Sat Jul 19 14:37:32 2014
+# 20.6s user time, 370ms system time, 44.36M rss, 321.61M vsz
+# Current date: Sat Jul 19 14:40:35 2014
 # Hostname: ip-172-31-26-61
 # Files: /tmp/mysql-slow.log
-# Overall: 105.28k total, 48 unique, 939.99 QPS, 0.85x concurrency _______
-# Time range: 2014-07-19 14:35:21 to 14:37:13
+# Overall: 116.88k total, 48 unique, 1.38k QPS, 0.70x concurrency ________
+# Time range: 2014-07-19 14:38:50 to 14:40:15
 # Attribute          total     min     max     avg     95%  stddev  median
 # ============     ======= ======= ======= ======= ======= ======= =======
-# Exec time            95s     3us   288ms   906us   247us     8ms    21us
-# Lock time          669ms       0     8ms     6us    44us    46us       0
-# Rows sent        138.30k       0     203    1.35    0.99   11.66       0
-# Rows examine      34.06M       0  40.54k  339.29    0.99   3.23k       0
-# Query size       142.69M      13 1021.73k   1.39k   40.45  36.39k   40.45
+# Exec time            59s     3us   296ms   506us   236us     6ms    20us
+# Lock time          790ms       0    11ms     6us    47us    53us       0
+# Rows sent        146.76k       0     201    1.29    0.99   11.09       0
+# Rows examine      10.08M       0  20.16k   90.39    0.99   1.16k       0
+# Query size       143.16M      13 1021.73k   1.25k   40.45  34.54k   40.45
 
 # Profile
-# Rank Query ID           Response time Calls R/Call V/M   Item
-# ==== ================== ============= ===== ====== ===== ===============
-#    1 0x4517399CB130EF84 35.8439 37.5%   977 0.0367  0.06 SELECT memos
-#    2 0x391C57CEB1157B93 17.8910 18.7%   883 0.0203  0.02 SELECT memos
-#    3 0x2D9FC10839732BB8 14.5018 15.2%   181 0.0801  0.05 SELECT memos
-#    4 0x88929194AB4B746F  9.4252  9.9%   140 0.0673  0.02 INSERT UPDATE SELECT INSERT REPLACE UPDATE DELETE UPDATE REPLACE SELECT UPDATE DELETE UPDATE SELECT REPLACE UPDATE DELETE UPDATE INSERT SELECT REPLACE DELETE REPLACE DELETE UPDATE DELETE SELECT UPDATE memos
-#    5 0xD675B617BD90D308  7.6636  8.0%   163 0.0470  0.01 SELECT memos
-#    6 0x8ED61FE2C1C9A2A1  7.3323  7.7% 98764 0.0001  0.00 SELECT users
-# MISC 0xMISC              2.8053  2.9%  4171 0.0007   0.0 <42 ITEMS>
+# Rank Query ID           Response time Calls  R/Call V/M   Item
+# ==== ================== ============= ====== ====== ===== ==============
+#    1 0x4517399CB130EF84 36.7611 62.1%   1085 0.0339  0.05 SELECT memos
+#    2 0x88929194AB4B746F 10.5769 17.9%    140 0.0755  0.03 INSERT UPDATE DELETE REPLACE DELETE UPDATE DELETE SELECT UPDATE SELECT DELETE UPDATE SELECT DELETE UPDATE memos
+#    3 0x8ED61FE2C1C9A2A1  7.1085 12.0% 109666 0.0001  0.00 SELECT users
+#    4 0x08E3E2CA950A9030  1.5160  2.6%   1085 0.0014  0.01 SELECT memos
+#    5 0x391C57CEB1157B93  1.2866  2.2%    966 0.0013  0.00 SELECT memos
+# MISC 0xMISC              1.9828  3.3%   3939 0.0005   0.0 <43 ITEMS>
 
-# Query 1: 15.76 QPS, 0.58x concurrency, ID 0x4517399CB130EF84 at byte 145325895
-# Scores: V/M = 0.06
-# Time range: 2014-07-19 14:35:38 to 14:36:40
-# Attribute    pct   total     min     max     avg     95%  stddev  median
-# ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     977
-# Exec time     37     36s    28us   288ms    37ms   128ms    45ms    13ms
-# Lock time      8    54ms       0   557us    54us   108us    45us    60us
-# Rows sent     47  65.33k       0     100   68.47   97.36   45.23   97.36
-# Rows examine  16   5.78M       0  20.12k   6.06k  19.40k   6.91k   2.06k
-# Query size     0  85.06k      82      95   89.15   92.72    6.23   92.72
-# String:
-# Databases    isucon
-# Hosts        localhost
-# Users        isucon
-# Query_time distribution
-#   1us
-#  10us  #############################################
-# 100us  ##########
-#   1ms  #########################
-#  10ms  ################################################################
-# 100ms  #######################
-#    1s
-#  10s+
-# Tables
-#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
-#    SHOW CREATE TABLE `isucon`.`memos`\G
-# EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 17700\G
-# *************************** 1. row ***************************
-#            id: 1
-#   select_type: SIMPLE
-#         table: memos
-#    partitions: NULL
-#          type: ref
-# possible_keys: memos_idx_is_private_created_at
-#           key: memos_idx_is_private_created_at
-#       key_len: 1
-#           ref: const
-#          rows: 30636
-#         Extra: Using where
-
-# Query 2: 14.48 QPS, 0.29x concurrency, ID 0x391C57CEB1157B93 at byte 165849780
-# Scores: V/M = 0.02
-# Time range: 2014-07-19 14:35:39 to 14:36:40
-# Attribute    pct   total     min     max     avg     95%  stddev  median
-# ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     883
-# Exec time     18     18s    28us    95ms    20ms    59ms    22ms     2ms
-# Lock time      5    34ms       0   160us    38us   108us    41us       0
-# Rows sent     30  41.88k       0     203   48.57  183.58   64.02       0
-# Rows examine  48  16.37M       0  40.54k  18.98k  40.32k  19.95k       0
-# Query size     0  48.93k      55      57   56.74   56.92       1   56.92
-# String:
-# Databases    isucon
-# Hosts        localhost
-# Users        isucon
-# Query_time distribution
-#   1us
-#  10us  ##################
-# 100us  ################################
-#   1ms  #####################
-#  10ms  ################################################################
-# 100ms
-#    1s
-#  10s+
-# Tables
-#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
-#    SHOW CREATE TABLE `isucon`.`memos`\G
-# EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE user='400'  ORDER BY created_at\G
-# *************************** 1. row ***************************
-#            id: 1
-#   select_type: SIMPLE
-#         table: memos
-#    partitions: NULL
-#          type: ALL
-# possible_keys: NULL
-#           key: NULL
-#       key_len: NULL
-#           ref: NULL
-#          rows: 61273
-#         Extra: Using where; Using filesort
-
-# Query 3: 3.02 QPS, 0.24x concurrency, ID 0x2D9FC10839732BB8 at byte 148360323
+# Query 1: 17.79 QPS, 0.60x concurrency, ID 0x4517399CB130EF84 at byte 157145707
 # Scores: V/M = 0.05
-# Time range: 2014-07-19 14:35:40 to 14:36:40
+# Time range: 2014-07-19 14:39:09 to 14:40:10
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     181
-# Exec time     15     15s    29us   228ms    80ms   163ms    62ms    95ms
-# Lock time      1    11ms       0   472us    63us   119us    54us    73us
-# Rows sent      4   6.11k       0     104   34.58   97.36   33.59   23.65
-# Rows examine   6   2.38M       0  20.15k  13.44k  19.40k   9.13k  19.40k
-# Query size     0  12.86k      72      73   72.73   72.65    0.50   72.65
+# Count          0    1085
+# Exec time     62     37s    27us   236ms    34ms   116ms    42ms    10ms
+# Lock time      6    55ms       0     2ms    50us   103us    59us    57us
+# Rows sent     48  70.61k       0     100   66.64   97.36   45.90   97.36
+# Rows examine  64   6.48M       0  20.12k   6.12k  19.40k   6.99k   1.69k
+# Query size     0  94.38k      82      95   89.07   92.72    6.26   92.72
 # String:
 # Databases    isucon
 # Hosts        localhost
 # Users        isucon
 # Query_time distribution
 #   1us
-#  10us  #########################
-# 100us  ###############
-#   1ms
-#  10ms  ###################
-# 100ms  ################################################################
+#  10us  ##############################################
+# 100us  #########
+#   1ms  ######################
+#  10ms  ################################################################
+# 100ms  ###############
 #    1s
 #  10s+
 # Tables
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
 #    SHOW CREATE TABLE `isucon`.`memos`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE user='398' AND is_private=0 ORDER BY created_at\G
+SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 20400\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -147,16 +62,16 @@ SELECT * FROM memos WHERE user='398' AND is_private=0 ORDER BY created_at\G
 #           key: memos_idx_is_private_created_at
 #       key_len: 1
 #           ref: const
-#          rows: 30636
+#          rows: 29608
 #         Extra: Using where
 
-# Query 4: 12.73 QPS, 0.86x concurrency, ID 0x88929194AB4B746F at byte 117204603
-# Scores: V/M = 0.02
-# Time range: 2014-07-19 14:35:22 to 14:35:33
+# Query 2: 11.67 QPS, 0.88x concurrency, ID 0x88929194AB4B746F at byte 132824114
+# Scores: V/M = 0.03
+# Time range: 2014-07-19 14:38:51 to 14:39:03
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
 # Count          0     140
-# Exec time      9      9s    32ms   251ms    67ms   122ms    34ms    59ms
+# Exec time     17     11s    32ms   296ms    76ms   148ms    45ms    65ms
 # Lock time      0       0       0       0       0       0       0       0
 # Rows sent      0       0       0       0       0       0       0       0
 # Rows examine   0       0       0       0       0       0       0       0
@@ -171,67 +86,25 @@ SELECT * FROM memos WHERE user='398' AND is_private=0 ORDER BY created_at\G
 # 100us
 #   1ms
 #  10ms  ################################################################
-# 100ms  ###########
+# 100ms  #################
 #    1s
 #  10s+
 # Tables
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
 #    SHOW CREATE TABLE `isucon`.`memos`\G
-INSERT INTO `memos` VALUES (33241,326,'# readable-stream\n\nA new class of streams for Node.js\n\nThis module provides the new Stream base classes introduced in Node\nv0.10, for use in Node v0.8.  You can use it to have programs that\nhave to work with node v0.8, while being forward-compatible for v0.10\nand beyond.  When you drop support for v0.8, you can remove this\nmodule, and only use the native streams.\n\nThis is almost exactly the same codebase as appears in Node v0.10.\nHowever:\n\n1. The exported object is actually the Readable class.  Decorating the\n   native `stream` module would be global pollution.\n2. In v0.10, you can safely use `base64` as an argument to\n   `setEncoding` in Readable streams.  However, in v0.8, the\n   StringDecoder class has no `end()` method, which is problematic for\n   Base64.  So, don\'t use that, because it\'ll break and be weird.\n\nOther than that, the API is the same as `require(\'stream\')` in v0.10,\nso the API docs are reproduced below.\n\n----------\n\n    Stability: 2 - Unstable\n\nA stream is an abstract interface implemented by various objects in\nNode.  For example a request to an HTTP server is a stream, as is\nstdout. Streams are readable, writable, or both. All streams are\ninstances of [EventEmitter][]\n\nYou can load the Stream base classes by doing `require(\'stream\')`.\nThere are base classes provided for Readable streams, Writable\nstreams, Duplex streams, and Transform streams.\n\n## Compatibility\n\nIn earlier versions of Node, the Readable stream interface was\nsimpler, but also less powerful and less useful.\n\n* Rather than waiting for you to call the `read()` method, `\'data\'`\n  events would start emitting immediately.  If you needed to do some\n  I/O to decide how to handle data, then you had to store the chunks\n  in some kind of buffer so that they would not be lost.\n* The `pause()` method was advisory, rather than guaranteed.  This\n  meant that you still had to be prepared to receive `\'data\'` events\n  even when the stream was in a paused state.\n\nIn Node v0.10, the Readable class described below was added.  For\nbackwards compatibility with older Node programs, Readable streams\nswitch into \"old mode\" when a `\'data\'` event handler is added, or when\nthe `pause()` or `resume()` methods are called.  The effect is that,\neven if you are not using the new `read()` method and `\'readable\'`\nevent, you no longer have to worry about losing `\'data\'` chunks.\n\nMost programs will continue to function normally.  However, this\nintroduces an edge case in the following conditions:\n\n* No `\'data\'` event handler is added.\n* The `pause()` and `resume()` methods are never called.\n\nFor example, consider the following code:\n\n```javascript\n// WARNING!  BROKEN!\nnet.createServer(function(socket) {\n\n  // we add an \'end\' method, but never consume the data\n  socket.on(\'end\', function() {\n    // It will never get here.\n    socket.end(\'I got your message (but didnt read it)\\n\');\n  });\n\n}).listen(1337);\n```\n\nIn versions of node prior to v0.10, the incoming message data would be\nsimply discarded.  However, in Node v0.10 and beyond, the socket will\nremain paused forever.\n\nThe workaround in this situation is to call the `resume()` method to\ntrigger \"old mode\" behavior:\n\n```javascript\n// Workaround\nnet.createServer(function(socket) {\n\n  socket.on(\'end\', function() {\n    socket.end(\'I got your message (but didnt read it)\\n\');\n  });\n\n  // start the flow of data, discarding it.\n  socket.resume();\n\n}).listen(1337);\n```\n\nIn addition to new Readable streams switching into old-mode, pre-v0.10\nstyle streams can be wrapped in a Readable class using the `wrap()`\nmethod.\n\n## Class: stream.Readable\n\n<!--type=class-->\n\nA `Readable Stream` has the following methods, members, and events.\n\nNote that `stream.Readable` is an abstract class designed to be\nextended with an underlying implementation of the `_read(size)`\nmethod. (See below.)\n\n### new stream.Readable([options])\n\n* `options` {Object}\n  * `highWaterMark` {Number} The maximum number of bytes to store in\n    the internal buffer before ceasing to read from the underlying\n    resource.  Default=16kb\n  * `encoding` {String} If specified, then buffers will be decoded to\n    strings using the specified encoding.  Default=null\n  * `objectMode` {Boolean} Whether this stream should behave\n    as a stream of objects. Meaning that stream.read(n) returns\n    a single value instead of a Buffer of size n\n\nIn classes that extend the Readable class, make sure to call the\nconstructor so that the buffering settings can be properly\ninitialized.\n\n### readable.\\_read(size)\n\n* `size` {Number} Number of bytes to read asynchronously\n\nNote: **This function should NOT be called directly.**  It should be\nimplemented by child classes, and called by the internal Readable\nclass methods only.\n\nAll Readable stream implementations must provide a `_read` method\nto fetch data from the underlying resource.\n\nThis method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you **are** expected to override this method in\nyour own extension classes.\n\nWhen data is available, put it into the read queue by calling\n`readable.push(chunk)`.  If `push` returns false, then you should stop\nreading.  When `_read` is called again, you should start pushing more\ndata.\n\nThe `size` argument is advisory.  Implementations where a \"read\" is a\nsingle call that returns data can use this to know how much data to\nfetch.  Implementations where that is not relevant, such as TCP or\nTLS, may ignore this argument, and simply provide data whenever it\nbecomes available.  There is no need, for example to \"wait\" until\n`size` bytes are available before calling `stream.push(chunk)`.\n\n### readable.push(chunk)\n\n* `chunk` {Buffer | null | String} Chunk of data to push into the read queue\n* return {Boolean} Whether or not more pushes should be performed\n\nNote: **This function should be called by Readable implementors, NOT\nby consumers of Readable subclasses.**  The `_read()` function will not\nbe called again until at least one `push(chunk)` call is made.  If no\ndata is available, then you MAY call `push(\'\')` (an empty string) to\nallow a future `_read` call, without adding any data to the queue.\n\nThe `Readable` class works by putting data into a read queue to be\npulled out later by calling the `read()` method when the `\'readable\'`\nevent fires.\n\nThe `push()` method will explicitly insert some data into the read\nqueue.  If it is called with `null` then it will signal the end of the\ndata.\n\nIn some cases, you may be wrapping a lower-level source which has some\nsort of pause/resume mechanism, and a data callback.  In those cases,\nyou could wrap the low-level source object by doing something like\nthis:\n\n```javascript\n// source is an object with readStop() and readStart() methods,\n// and an `ondata` member that gets called when it has data, and\n// an `onend` member that gets called when the data is over.\n\nvar stream = new Readable();\n\nsource.ondata = function(chunk) {\n  // if push() returns false, then we need to stop reading from source\n  if (!stream.push(chunk))\n    source.readStop();\n};\n\nsource.onend = function() {\n  stream.push(null);\n};\n\n// _read will be called when the stream wants to pull more data in\n// the advisory size argument is ignored in this case.\nstream._read = function(n) {\n  source.readStart();\n};\n```\n\n### readable.unshift(chunk)\n\n* `chunk` {Buffer | null | String} Chunk of data to unshift onto the read queue\n* return {Boolean} Whether or not more pushes should be performed\n\nThis is the corollary of `readable.push(chunk)`.  Rather than putting\nthe data at the *end* of the read queue, it puts it at the *front* of\nthe read queue.\n\nThis is useful in certain use-cases where a stream is being consumed\nby a parser, which needs to \"un-consume\" some data that it has\noptimistically pulled out of the source.\n\n```javascript\n// A parser for a simple data protocol.\n// The \"header\" is a JSON object, followed by 2 \\n characters, and\n// then a message body.\n//\n// Note: This can be done more simply as a Transform stream.  See below.\n\nfunction SimpleProtocol(source, options) {\n  if (!(this instanceof SimpleProtocol))\n    return new SimpleProtocol(options);\n\n  Readable.call(this, options);\n  this._inBody = false;\n  this._sawFirstCr = false;\n\n  // source is a readable stream, such as a socket or file\n  this._source = source;\n\n  var self = this;\n  source.on(\'end\', function() {\n    self.push(null);\n  });\n\n  // give it a kick whenever the source is readable\n  // read(0) will not consume any bytes\n  source.on(\'readable\', function() {\n    self.read(0);\n  });\n\n  this._rawHeader = [];\n  this.header = null;\n}\n\nSimpleProtocol.prototype = Object.create(\n  Readable.prototype, { constructor: { value: SimpleProtocol }});\n\nSimpleProtocol.prototype._read = function(n) {\n  if (!this._inBody) {\n    var chunk = this._source.read();\n\n    // if the source doesn\'t have data, we don\'t have data yet.\n    if (chunk === null)\n      return this.push(\'\');\n\n    // check if the chunk has a \\n\\n\n    var split = -1;\n    for (var i = 0; i < chunk.length; i++) {\n      if (chunk[i] === 10) { // \'\\n\'\n        if (this._sawFirstCr) {\n          split = i;\n          break;\n        } else {\n          this._sawFirstCr = true;\n        }\n      } else {\n        this._sawFirstCr = false;\n      }\n    }\n\n    if (split === -1) {\n      // still waiting for the \\n\\n\n      // stash the chunk, and try again.\n      this._rawHeader.push(chunk);\n      this.push(\'\');\n    } else {\n      this._inBody = true;\n      var h = chunk.slice(0, split);\n      this._rawHeader.push(h);\n      var header = Buffer.concat(this._rawHeader).toString();\n      try {\n        this.header = JSON.parse(header);\n      } catch (er) {\n        this.emit(\'error\', new Error(\'invalid simple protocol data\'));\n        return;\n      }\n      // now, because we got some extra data, unshift the rest\n      // back into the read queue so that our consumer will see it.\n      var b = chunk.slice(split);\n      this.unshift(b);\n\n      // and let them know that we are done parsing the header.\n      this.emit(\'header\', this.header);\n    }\n  } else {\n    // from there on, just provide the data to our consumer.\n    // careful not to push(null), since that would indicate EOF.\n    var chunk = this._source.read();\n    if (chunk) this.push(chunk);\n  }\n};\n\n// Usage:\nvar parser = new SimpleProtocol(source);\n// Now parser is a readable stream that will emit \'header\'\n// with the parsed header data.\n```\n\n### readable.wrap(stream)\n\n* `stream` {Stream} An \"old style\" readable stream\n\nIf you are using an older Node library that emits `\'data\'` events and\nhas a `pause()` method that is advisory only, then you can use the\n`wrap()` method to create a Readable stream that uses the old stream\nas its data source.\n\nFor example:\n\n```javascript\nvar OldReader = require(\'./old-api-module.js\').OldReader;\nvar oreader = new OldReader;\nvar Readable = require(\'stream\').Readable;\nvar myReader = new Readable().wrap(oreader);\n\nmyReader.on(\'readable\', function() {\n  myReader.read(); // etc.\n});\n```\n\n### Event: \'readable\'\n\nWhen there is data ready to be consumed, this event will fire.\n\nWhen this event emits, call the `read()` method to consume the data.\n\n### Event: \'end\'\n\nEmitted when the stream has received an EOF (FIN in TCP terminology).\nIndicates that no more `\'data\'` events will happen. If the stream is\nalso writable, it may be possible to continue writing.\n\n### Event: \'data\'\n\nThe `\'data\'` event emits either a `Buffer` (by default) or a string if\n`setEncoding()` was used.\n\nNote that adding a `\'data\'` event listener will switch the Readable\nstream into \"old mode\", where data is emitted as soon as it is\navailable, rather than waiting for you to call `read()` to consume it.\n\n### Event: \'error\'\n\nEmitted if there was an error receiving data.\n\n### Event: \'close\'\n\nEmitted when the underlying resource (for example, the backing file\ndescriptor) has been closed. Not all streams will emit this.\n\n### readable.setEncoding(encoding)\n\nMakes the `\'data\'` event emit a string instead of a `Buffer`. `encoding`\ncan be `\'utf8\'`, `\'utf16le\'` (`\'ucs2\'`), `\'ascii\'`, or `\'hex\'`.\n\nThe encoding can also be set by specifying an `encoding` field to the\nconstructor.\n\n### readable.read([size])\n\n* `size` {Number | null} Optional number of bytes to read.\n* Return: {Buffer | String | null}\n\nNote: **This function SHOULD be called by Readable stream users.**\n\nCall this method to consume data once the `\'readable\'` event is\nemitted.\n\nThe `size` argument will set a minimum number of bytes that you are\ninterested in.  If not set, then the entire content of the internal\nbuffer is returned.\n\nIf there is no data to consume, or if there are fewer bytes in the\ninternal buffer than the `size` argument, then `null` is returned, and\na future `\'readable\'` event will be emitted when more is available.\n\nCalling `stream.read(0)` will always return `null`, and will trigger a\nrefresh of the internal buffer, but otherwise be a no-op.\n\n### readable.pipe(destination, [options])\n\n* `destination` {Writable Stream}\n* `options` {Object} Optional\n  * `end` {Boolean} Default=true\n\nConnects this readable stream to `destination` WriteStream. Incoming\ndata on this stream gets written to `destination`.  Properly manages\nback-pressure so that a slow destination will not be overwhelmed by a\nfast readable stream.\n\nThis function returns the `destination` stream.\n\nFor example, emulating the Unix `cat` command:\n\n    process.stdin.pipe(process.stdout);\n\nBy default `end()` is called on the destination when the source stream\nemits `end`, so that `destination` is no longer writable. Pass `{ end:\nfalse }` as `options` to keep the destination stream open.\n\nThis keeps `writer` open so that \"Goodbye\" can be written at the\nend.\n\n    reader.pipe(writer, { end: false });\n    reader.on(\"end\", function() {\n      writer.end(\"Goodbye\\n\");\n    });\n\nNote that `process.stderr` and `process.stdout` are never closed until\nthe process exits, regardless of the specified options.\n\n### readable.unpipe([destination])\n\n* `destination` {Writable Stream} Optional\n\nUndo a previously established `pipe()`.  If no destination is\nprovided, then all previously established pipes are removed.\n\n### readable.pause()\n\nSwitches the readable stream into \"old mode\", where data is emitted\nusing a `\'data\'` event rather than being buffered for consumption via\nthe `read()` method.\n\nCeases the flow of data.  No `\'data\'` events are emitted while the\nstream is in a paused state.\n\n### readable.resume()\n\nSwitches the readable stream into \"old mode\", where data is emitted\nusing a `\'data\'` event rather than being buffered for consumption via\nthe `read()` method.\n\nResumes the incoming `\'data\'` events after a `pause()`.\n\n\n## Class: stream.Writable\n\n<!--type=class-->\n\nA `Writable` Stream has the following methods, members, and events.\n\nNote that `stream.Writable` is an abstract class designed to be\nextended with an underlying implementation of the\n`_write(chunk, encoding, cb)` method. (See below.)\n\n### new stream.Writable([options])\n\n* `options` {Object}\n  * `highWaterMark` {Number} Buffer level when `write()` starts\n    returning false. Default=16kb\n  * `decodeStrings` {Boolean} Whether or not to decode strings into\n    Buffers before passing them to `_write()`.  Default=true\n\nIn classes that extend the Writable class, make sure to call the\nconstructor so that the buffering settings can be properly\ninitialized.\n\n### writable.\\_write(chunk, encoding, callback)\n\n* `chunk` {Buffer | String} The chunk to be written.  Will always\n  be a buffer unless the `decodeStrings` option was set to `false`.\n* `encoding` {String} If the chunk is a string, then this is the\n  encoding type.  Ignore chunk is a buffer.  Note that chunk will\n  **always** be a buffer unless the `decodeStrings` option is\n  explicitly set to `false`.\n* `callback` {Function} Call this function (optionally with an error\n  argument) when you are done processing the supplied chunk.\n\nAll Writable stream implementations must provide a `_write` method to\nsend data to the underlying resource.\n\nNote: **This function MUST NOT be called directly.**  It should be\nimplemented by child classes, and called by the internal Writable\nclass methods only.\n\nCall the callback using the standard `callback(error)` pattern to\nsignal that the write completed successfully or with an error.\n\nIf the `decodeStrings` flag is set in the constructor options, then\n`chunk` may be a string rather than a Buffer, and `encoding` will\nindicate the sort of string that it is.  This is to support\nimplementations that have an optimized handling for certain string\ndata encodings.  If you do not explicitly set the `decodeStrings`\noption to `false`, then you can safely ignore the `encoding` argument,\nand assume that `chunk` will always be a Buffer.\n\nThis method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you **are** expected to override this method in\nyour own extension classes.\n\n\n### writable.write(chunk, [encoding], [callback])\n\n* `chunk` {Buffer | String} Data to be written\n* `encoding` {String} Optional.  If `chunk` is a string, then encoding\n  defaults to `\'utf8\'`\n* `callback` {Function} Optional.  Called when this chunk is\n  successfully written.\n* Returns {Boolean}\n\nWrites `chunk` to the stream.  Returns `true` if the data has been\nflushed to the underlying resource.  Returns `false` to indicate that\nthe buffer is full, and the data will be sent out in the future. The\n`\'drain\'` event will indicate when the buffer is empty again.\n\nThe specifics of when `write()` will return false, is determined by\nthe `highWaterMark` option provided to the constructor.\n\n### writable.end([chunk], [encoding], [callback])\n\n* `chunk` {Buffer | String} Optional final data to be written\n* `encoding` {String} Optional.  If `chunk` is a string, then encoding\n  defaults to `\'utf8\'`\n* `callback` {Function} Optional.  Called when the final chunk is\n  successfully written.\n\nCall this method to signal the end of the data being written to the\nstream.\n\n### Event: \'drain\'\n\nEmitted when the stream\'s write queue empties and it\'s safe to write\nwithout buffering again. Listen for it when `stream.write()` returns\n`false`.\n\n### Event: \'close\'\n\nEmitted when the underlying resource (for example, the backing file\ndescriptor) has been closed. Not all streams will emit this.\n\n### Event: \'finish\'\n\nWhen `end()` is called and there are no more chunks to write, this\nevent is emitted.\n\n### Event: \'pipe\'\n\n* `source` {Readable Stream}\n\nEmitted when the stream is passed to a readable stream\'s pipe method.\n\n### Event \'unpipe\'\n\n* `source` {Readable Stream}\n\nEmitted when a previously established `pipe()` is removed using the\nsource Readable stream\'s `unpipe()` method.\n\n## Class: stream.Duplex\n\n<!--type=class-->\n\nA \"duplex\" stream is one that is both Readable and Writable, such as a\nTCP socket connection.\n\nNote that `stream.Duplex` is an abstract class designed to be\nextended with an underlying implementation of the `_read(size)`\nand `_write(chunk, encoding, callback)` methods as you would with a Readable or\nWritable stream class.\n\nSince JavaScript doesn\'t have multiple prototypal inheritance, this\nclass prototypally inherits from Readable, and then parasitically from\nWritable.  It is thus up to the user to implement both the lowlevel\n`_read(n)` method as well as the lowlevel `_write(chunk, encoding, cb)` method\non extension duplex classes.\n\n### new stream.Duplex(options)\n\n* `options` {Object} Passed to both Writable and Readable\n  constructors. Also has the following fields:\n  * `allowHalfOpen` {Boolean} Default=true.  If set to `false`, then\n    the stream will automatically end the readable side when the\n    writable side ends and vice versa.\n\nIn classes that extend the Duplex class, make sure to call the\nconstructor so that the buffering settings can be properly\ninitialized.\n\n## Class: stream.Transform\n\nA \"transform\" stream is a duplex stream where the output is causally\nconnected in some way to the input, such as a zlib stream or a crypto\nstream.\n\nThere is no requirement that the output be the same size as the input,\nthe same number of chunks, or arrive at the same time.  For example, a\nHash stream will only ever have a single chunk of output which is\nprovided when the input is ended.  A zlib stream will either produce\nmuch smaller or much larger than its input.\n\nRather than implement the `_read()` and `_write()` methods, Transform\nclasses must implement the `_transform()` method, and may optionally\nalso implement the `_flush()` method.  (See below.)\n\n### new stream.Transform([options])\n\n* `options` {Object} Passed to both Writable and Readable\n  constructors.\n\nIn classes that extend the Transform class, make sure to call the\nconstructor so that the buffering settings can be properly\ninitialized.\n\n### transform.\\_transform(chunk, encoding, callback)\n\n* `chunk` {Buffer | String} The chunk to be transformed.  Will always\n  be a buffer unless the `decodeStrings` option was set to `false`.\n* `encoding` {String} If the chunk is a string, then this is the\n  encoding type.  (Ignore if `decodeStrings` chunk is a buffer.)\n* `callback` {Function} Call this function (optionally with an error\n  argument) when you are done processing the supplied chunk.\n\nNote: **This function MUST NOT be called directly.**  It should be\nimplemented by child classes, and called by the internal Transform\nclass methods only.\n\nAll Transform stream implementations must provide a `_transform`\nmethod to accept input and produce output.\n\n`_transform` should do whatever has to be done in this specific\nTransform class, to handle the bytes being written, and pass them off\nto the readable portion of the interface.  Do asynchronous I/O,\nprocess things, and so on.\n\nCall `transform.push(outputChunk)` 0 or more times to generate output\nfrom this input chunk, depending on how much data you want to output\nas a result of this chunk.\n\nCall the callback function only when the current chunk is completely\nconsumed.  Note that there may or may not be output as a result of any\nparticular input chunk.\n\nThis method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you **are** expected to override this method in\nyour own extension classes.\n\n### transform.\\_flush(callback)\n\n* `callback` {Function} Call this function (optionally with an error\n  argument) when you are done flushing any remaining data.\n\nNote: **This function MUST NOT be called directly.**  It MAY be implemented\nby child classes, and if so, will be called by the internal Transform\nclass methods only.\n\nIn some cases, your transform operation may need to emit a bit more\ndata at the end of the stream.  For example, a `Zlib` compression\nstream will store up some internal state so that it can optimally\ncompress the output.  At the end, however, it needs to do the best it\ncan with what is left, so that the data will be complete.\n\nIn those cases, you can implement a `_flush` method, which will be\ncalled at the very end, after all the written data is consumed, but\nbefore emitting `end` to signal the end of the readable side.  Just\nlike with `_transform`, call `transform.push(chunk)` zero or more\ntimes, as appropriate, and call `callback` when the flush operation is\ncomplete.\n\nThis method is prefixed with an underscore because it is internal to\nthe class that defines it, and should not be called directly by user\nprograms.  However, you **are** expected to override this method in\nyour own extension classes.\n\n### Example: `SimpleProtocol` parser\n\nThe example above of a simple protocol parser can be implemented much\nmore simply by using the higher level `Transform` stream class.\n\nIn this example, rather than providing the input as an argument, it\nwould be piped into the parser, which is a more idiomatic Node stream\napproach.\n\n```javascript\nfunction SimpleProtocol(options) {\n  if (!(this instanceof SimpleProtocol))\n    return new SimpleProtocol(options);\n\n  Transform.call(this, options);\n  this._inBody = false;\n  this._sawFirstCr = false;\n  this._rawHeader = [];\n  this.header = null;\n}\n\nSimpleProtocol.prototype = Object.create(\n  Transform.prototype, { constructor: { value: SimpleProtocol }});\n\nSimpleProtocol.prototype._transform = function(chunk, encoding, done) {\n  if (!this._inBody) {\n    // check if the chunk has a \\n\\n\n    var split = -1;\n    for (var i = 0; i < chunk.length; i++) {\n      if (chunk[i] === 10) { // \'\\n\'\n        if (this._sawFirstCr) {\n          split = i;\n          break;\n        } else {\n          this._sawFirstCr = true;\n        }\n      } else {\n        this._sawFirstCr = false;\n      }\n    }\n\n    if (split === -1) {\n      // still waiting for the \\n\\n\n      // stash the chunk, and try again.\n      this._rawHeader.push(chunk);\n    } else {\n      this._inBody = true;\n      var h = chunk.slice(0, split);\n      this._rawHeader.push(h);\n      var header = Buffer.concat(this._rawHeader).toString();\n      try {\n        this.header = JSON.parse(header);\n      } catch (er) {\n        this.emit(\'error\', new Error(\'invalid simple protocol data\'));\n        return;\n      }\n      // and let them know that we are done parsing the header.\n      this.emit(\'header\', this.header);\n\n      // now, because we got some extra data, emit this first.\n      this.push(b);\n    }\n  } else {\n    // from there on, just provide the data to our consumer as-is.\n    this.push(b);\n  }\n  done();\n};\n\nvar parser = new SimpleProtocol();\nsource.pipe(parser)\n\n// Now parser is a readable stream that will emit \'header\'\n// with the parsed header data.\n```\n\n\n## Class: stream.PassThrough\n\nThis is a trivial implementation of a `Transform` stream that simply\npasses the input bytes across to the output.  Its purpose is mainly\nfor examples and testing, but there are occasionally use cases where\nit can come in handy.\n\n\n[EventEmitter]: events.html#events_class_events_eventemitter\n',0,'2013-10-04 05:53:13','2013-10-04 11:39:42') /*... omitted ...*/\G
+INSERT INTO `memos` VALUES (37630,369,'npm-faq(7) -- Frequently Asked Questions\n========================================\n\n## Where can I find these docs in HTML?\n\n<https://npmjs.org/doc/>, or run:\n\n    npm config set viewer browser\n\nto open these documents in your default web browser rather than `man`.\n\n## It didn\'t work.\n\nThat\'s not really a question.\n\n## Why didn\'t it work?\n\nI don\'t know yet.\n\nRead the error output, and if you can\'t figure out what it means,\ndo what it says and post a bug with all the information it asks for.\n\n## Where does npm put stuff?\n\nSee `npm-folders(5)`\n\ntl;dr:\n\n* Use the `npm root` command to see where modules go, and the `npm bin`\n  command to see where executables go\n* Global installs are different from local installs.  If you install\n  something with the `-g` flag, then its executables go in `npm bin -g`\n  and its modules go in `npm root -g`.\n\n## How do I install something on my computer in a central location?\n\nInstall it globally by tacking `-g` or `--global` to the command.  (This\nis especially important for command line utilities that need to add\ntheir bins to the global system `PATH`.)\n\n## I installed something globally, but I can\'t `require()` it\n\nInstall it locally.\n\nThe global install location is a place for command-line utilities\nto put their bins in the system `PATH`.  It\'s not for use with `require()`.\n\nIf you `require()` a module in your code, then that means it\'s a\ndependency, and a part of your program.  You need to install it locally\nin your program.\n\n## Why can\'t npm just put everything in one place, like other package managers?\n\nNot every change is an improvement, but every improvement is a change.\nThis would be like asking git to do network IO for every commit.  It\'s\nnot going to happen, because it\'s a terrible idea that causes more\nproblems than it solves.\n\nIt is much harder to avoid dependency conflicts without nesting\ndependencies.  This is fundamental to the way that npm works, and has\nproven to be an extremely successful approach.  See `npm-folders(5)` for\nmore details.\n\nIf you want a package to be installed in one place, and have all your\nprograms reference the same copy of it, then use the `npm link` command.\nThat\'s what it\'s for.  Install it globally, then link it into each\nprogram that uses it.\n\n## Whatever, I really want the old style \'everything global\' style.\n\nWrite your own package manager, then.  It\'s not that hard.\n\nnpm will not help you do something that is known to be a bad idea.\n\n## Should I check my `node_modules` folder into git?\n\nMikeal Rogers answered this question very well:\n\n<http://www.mikealrogers.com/posts/nodemodules-in-git.html>\n\ntl;dr\n\n* Check `node_modules` into git for things you **deploy**, such as\n  websites and apps.\n* Do not check `node_modules` into git for libraries and modules\n  intended to be reused.\n* Use npm to manage dependencies in your dev environment, but not in\n  your deployment scripts.\n\n## Is it \'npm\' or \'NPM\' or \'Npm\'?\n\nnpm should never be capitalized unless it is being displayed in a\nlocation that is customarily all-caps (such as the title of man pages.)\n\n## If \'npm\' is an acronym, why is it never capitalized?\n\nContrary to the belief of many, \"npm\" is not in fact an abbreviation for\n\"Node Package Manager\".  It is a recursive bacronymic abbreviation for\n\"npm is not an acronym\".  (If it was \"ninaa\", then it would be an\nacronym, and thus incorrectly named.)\n\n\"NPM\", however, *is* an acronym (more precisely, a capitonym) for the\nNational Association of Pastoral Musicians.  You can learn more\nabout them at <http://npm.org/>.\n\nIn software, \"NPM\" is a Non-Parametric Mapping utility written by\nChris Rorden.  You can analyze pictures of brains with it.  Learn more\nabout the (capitalized) NPM program at <http://www.cabiatl.com/mricro/npm/>.\n\nThe first seed that eventually grew into this flower was a bash utility\nnamed \"pm\", which was a shortened descendent of \"pkgmakeinst\", a\nbash function that was used to install various different things on different\nplatforms, most often using Yahoo\'s `yinst`.  If `npm` was ever an\nacronym for anything, it was `node pm` or maybe `new pm`.\n\nSo, in all seriousness, the \"npm\" project is named after its command-line\nutility, which was organically selected to be easily typed by a right-handed\nprogrammer using a US QWERTY keyboard layout, ending with the\nright-ring-finger in a postition to type the `-` key for flags and\nother command-line arguments.  That command-line utility is always\nlower-case, though it starts most sentences it is a part of.\n\n## How do I list installed packages?\n\n`npm ls`\n\n## How do I search for packages?\n\n`npm search`\n\nArguments are greps.  `npm search jsdom` shows jsdom packages.\n\n## How do I update npm?\n\n    npm update npm -g\n\nYou can also update all outdated local packages by doing `npm update` without\nany arguments, or global packages by doing `npm update -g`.\n\nOccasionally, the version of npm will progress such that the current\nversion cannot be properly installed with the version that you have\ninstalled already.  (Consider, if there is ever a bug in the `update`\ncommand.)\n\nIn those cases, you can do this:\n\n    curl https://npmjs.org/install.sh | sh\n\n## What is a `package`?\n\nA package is:\n\n* a) a folder containing a program described by a package.json file\n* b) a gzipped tarball containing (a)\n* c) a url that resolves to (b)\n* d) a `<name>@<version>` that is published on the registry with (c)\n* e) a `<name>@<tag>` that points to (d)\n* f) a `<name>` that has a \"latest\" tag satisfying (e)\n* g) a `git` url that, when cloned, results in (a).\n\nEven if you never publish your package, you can still get a lot of\nbenefits of using npm if you just want to write a node program (a), and\nperhaps if you also want to be able to easily install it elsewhere\nafter packing it up into a tarball (b).\n\nGit urls can be of the form:\n\n    git://github.com/user/project.git#commit-ish\n    git+ssh://user@hostname:project.git#commit-ish\n    git+http://user@hostname/project/blah.git#commit-ish\n    git+https://user@hostname/project/blah.git#commit-ish\n\nThe `commit-ish` can be any tag, sha, or branch which can be supplied as\nan argument to `git checkout`.  The default is `master`.\n\n## What is a `module`?\n\nA module is anything that can be loaded with `require()` in a Node.js\nprogram.  The following things are all examples of things that can be\nloaded as modules:\n\n* A folder with a `package.json` file containing a `main` field.\n* A folder with an `index.js` file in it.\n* A JavaScript file.\n\nMost npm packages are modules, because they are libraries that you\nload with `require`.  However, there\'s no requirement that an npm\npackage be a module!  Some only contain an executable command-line\ninterface, and don\'t provide a `main` field for use in Node programs.\n\nAlmost all npm packages (at least, those that are Node programs)\n*contain* many modules within them (because every file they load with\n`require()` is a module).\n\nIn the context of a Node program, the `module` is also the thing that\nwas loaded *from* a file.  For example, in the following program:\n\n    var req = require(\'request\')\n\nwe might say that \"The variable `req` refers to the `request` module\".\n\n## So, why is it the \"`node_modules`\" folder, but \"`package.json`\" file?  Why not `node_packages` or `module.json`?\n\nThe `package.json` file defines the package.  (See \"What is a\npackage?\" above.)\n\nThe `node_modules` folder is the place Node.js looks for modules.\n(See \"What is a module?\" above.)\n\nFor example, if you create a file at `node_modules/foo.js` and then\nhad a program that did `var f = require(\'foo.js\')` then it would load\nthe module.  However, `foo.js` is not a \"package\" in this case,\nbecause it does not have a package.json.\n\nAlternatively, if you create a package which does not have an\n`index.js` or a `\"main\"` field in the `package.json` file, then it is\nnot a module.  Even if it\'s installed in `node_modules`, it can\'t be\nan argument to `require()`.\n\n## `\"node_modules\"` is the name of my deity\'s arch-rival, and a Forbidden Word in my religion.  Can I configure npm to use a different folder?\n\nNo.  This will never happen.  This question comes up sometimes,\nbecause it seems silly from the outside that npm couldn\'t just be\nconfigured to put stuff somewhere else, and then npm could load them\nfrom there.  It\'s an arbitrary spelling choice, right?  What\'s the big\ndeal?\n\nAt the time of this writing, the string `\'node_modules\'` appears 151\ntimes in 53 separate files in npm and node core (excluding tests and\ndocumentation).\n\nSome of these references are in node\'s built-in module loader.  Since\nnpm is not involved **at all** at run-time, node itself would have to\nbe configured to know where you\'ve decided to stick stuff.  Complexity\nhurdle #1.  Since the Node module system is locked, this cannot be\nchanged, and is enough to kill this request.  But I\'ll continue, in\ndeference to your deity\'s delicate feelings regarding spelling.\n\nMany of the others are in dependencies that npm uses, which are not\nnecessarily tightly coupled to npm (in the sense that they do not read\nnpm\'s configuration files, etc.)  Each of these would have to be\nconfigured to take the name of the `node_modules` folder as a\nparameter.  Complexity hurdle #2.\n\nFurthermore, npm has the ability to \"bundle\" dependencies by adding\nthe dep names to the `\"bundledDependencies\"` list in package.json,\nwhich causes the folder to be included in the package tarball.  What\nif the author of a module bundles its dependencies, and they use a\ndifferent spelling for `node_modules`?  npm would have to rename the\nfolder at publish time, and then be smart enough to unpack it using\nyour locally configured name.  Complexity hurdle #3.\n\nFurthermore, what happens when you *change* this name?  Fine, it\'s\neasy enough the first time, just rename the `node_modules` folders to\n`./blergyblerp/` or whatever name you choose.  But what about when you\nchange it again?  npm doesn\'t currently track any state about past\nconfiguration settings, so this would be rather difficult to do\nproperly.  It would have to track every previous value for this\nconfig, and always accept any of them, or else yesterday\'s install may\nbe broken tomorrow.  Complexity hurdle #5.\n\nNever going to happen.  The folder is named `node_modules`.  It is\nwritten indelibly in the Node Way, handed down from the ancient times\nof Node 0.3.\n\n## How do I install node with npm?\n\nYou don\'t.  Try one of these node version managers:\n\nUnix:\n\n* <http://github.com/isaacs/nave>\n* <http://github.com/visionmedia/n>\n* <http://github.com/creationix/nvm>\n\nWindows:\n\n* <http://github.com/marcelklehr/nodist>\n* <https://github.com/hakobera/nvmw>\n\n## How can I use npm for development?\n\nSee `npm-developers(7)` and `package.json(5)`.\n\nYou\'ll most likely want to `npm link` your development folder.  That\'s\nawesomely handy.\n\nTo set up your own private registry, check out `npm-registry(7)`.\n\n## Can I list a url as a dependency?\n\nYes.  It should be a url to a gzipped tarball containing a single folder\nthat has a package.json in its root, or a git url.\n(See \"what is a package?\" above.)\n\n## How do I symlink to a dev folder so I don\'t have to keep re-installing?\n\nSee `npm-link(1)`\n\n## The package registry website.  What is that exactly?\n\nSee `npm-registry(7)`.\n\n## I forgot my password, and can\'t publish.  How do I reset it?\n\nGo to <https://npmjs.org/forgot>.\n\n## I get ECONNREFUSED a lot.  What\'s up?\n\nEither the registry is down, or node\'s DNS isn\'t able to reach out.\n\nTo check if the registry is down, open up <http://registry.npmjs.org/>\nin a web browser.  This will also tell you if you are just unable to\naccess the internet for some reason.\n\nIf the registry IS down, let me know by emailing <i@izs.me> or posting\nan issue at <https://github.com/isaacs/npm/issues>.  We\'ll have\nsomeone kick it or something.\n\n## Why no namespaces?\n\nPlease see this discussion: <https://github.com/isaacs/npm/issues/798>\n\ntl;dr - It doesn\'t actually make things better, and can make them worse.\n\nIf you want to namespace your own packages, you may: simply use the\n`-` character to separate the names.  npm is a mostly anarchic system.\nThere is not sufficient need to impose namespace rules on everyone.\n\n## Who does npm?\n\n`npm view npm author`\n\n`npm view npm contributors`\n\n## I have a question or request not addressed here. Where should I put it?\n\nPost an issue on the github project:\n\n* <https://github.com/isaacs/npm/issues>\n\n## Why does npm hate me?\n\nnpm is not capable of hatred.  It loves everyone, especially you.\n\n## SEE ALSO\n\n* npm(1)\n* npm-developers(7)\n* package.json(5)\n* npm-config(1)\n* npm-config(7)\n* npmrc(5)\n* npm-config(7)\n* npm-folders(5)\n',0,'2013-10-04 07:06:22','2013-10-04 11:39:46') /*... omitted ...*/\G
 
-# Query 5: 2.72 QPS, 0.13x concurrency, ID 0xD675B617BD90D308 at byte 149522537
-# Scores: V/M = 0.01
-# Time range: 2014-07-19 14:35:39 to 14:36:39
-# Attribute    pct   total     min     max     avg     95%  stddev  median
-# ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     163
-# Exec time      8      8s    18ms   100ms    47ms    75ms    16ms    44ms
-# Lock time      1    10ms    43us    81us    59us    66us     5us    57us
-# Rows sent     11  16.06k       5     202  100.91  192.76   56.99   88.31
-# Rows examine  18   6.43M  40.23k  40.54k  40.39k  40.32k  158.50  40.32k
-# Query size     0  16.99k     105     107  106.75  102.22       0  102.22
-# String:
-# Databases    isucon
-# Hosts        localhost
-# Users        isucon
-# Query_time distribution
-#   1us
-#  10us
-# 100us
-#   1ms
-#  10ms  ################################################################
-# 100ms  #
-#    1s
-#  10s+
-# Tables
-#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
-#    SHOW CREATE TABLE `isucon`.`memos`\G
-# EXPLAIN /*!50100 PARTITIONS*/
-SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user='8' ORDER BY created_at DESC\G
-# *************************** 1. row ***************************
-#            id: 1
-#   select_type: SIMPLE
-#         table: memos
-#    partitions: NULL
-#          type: ALL
-# possible_keys: NULL
-#           key: NULL
-#       key_len: NULL
-#           ref: NULL
-#          rows: 61273
-#         Extra: Using where; Using filesort
-
-# Query 6: 1.59k QPS, 0.12x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 153871957
+# Query 3: 1.80k QPS, 0.12x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 163052047
 # Scores: V/M = 0.00
-# Time range: 2014-07-19 14:35:38 to 14:36:40
+# Time range: 2014-07-19 14:39:09 to 14:40:10
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count         93   98764
-# Exec time      7      7s    12us    20ms    74us   204us   275us    20us
-# Lock time     58   393ms       0     6ms     3us    40us    37us       0
-# Rows sent      5   7.07k       0       1    0.07    0.99    0.26       0
-# Rows examine   0   7.07k       0       1    0.07    0.99    0.26       0
-# Query size     2   3.83M      39      41   40.71   40.45    0.81   40.45
+# Count         93  109666
+# Exec time     12      7s    12us    25ms    64us   204us   235us    20us
+# Lock time     65   516ms       0    11ms     4us    42us    53us       0
+# Rows sent      6   9.43k       0       1    0.09    0.99    0.28       0
+# Rows examine   0   9.43k       0       1    0.09    0.99    0.28       0
+# Query size     2   4.26M      39      41   40.70   40.45    0.81   40.45
 # String:
 # Databases    isucon
 # Hosts        localhost
@@ -239,7 +112,7 @@ SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user='8'
 # Query_time distribution
 #   1us
 #  10us  ################################################################
-# 100us  ######################
+# 100us  #################
 #   1ms  #
 #  10ms  #
 # 100ms
@@ -249,7 +122,7 @@ SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user='8'
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'users'\G
 #    SHOW CREATE TABLE `isucon`.`users`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT username FROM users WHERE id='359'\G
+SELECT username FROM users WHERE id='89'\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -262,3 +135,87 @@ SELECT username FROM users WHERE id='359'\G
 #           ref: const
 #          rows: 1
 #         Extra: NULL
+
+# Query 4: 17.79 QPS, 0.02x concurrency, ID 0x08E3E2CA950A9030 at byte 163556273
+# Scores: V/M = 0.01
+# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0    1085
+# Exec time      2      2s    14us    22ms     1ms     9ms     3ms    25us
+# Lock time      1    12ms       0   226us    10us    66us    25us       0
+# Rows sent      0     179       0       1    0.16    0.99    0.37       0
+# Rows examine  34   3.51M       0  20.16k   3.32k  19.40k   7.20k       0
+# Query size     0  52.98k      50      50      50      50       0      50
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  #
+#   1ms  ##########
+#  10ms  ##
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT count(*) AS c FROM memos WHERE is_private=0\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ref
+# possible_keys: memos_idx_is_private_created_at
+#           key: memos_idx_is_private_created_at
+#       key_len: 1
+#           ref: const
+#          rows: 29608
+#         Extra: Using index
+
+# Query 5: 15.84 QPS, 0.02x concurrency, ID 0x391C57CEB1157B93 at byte 160398585
+# Scores: V/M = 0.00
+# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     966
+# Exec time      2      1s    24us    12ms     1ms     3ms     1ms     1ms
+# Lock time      4    34ms       0     1ms    35us    98us    52us       0
+# Rows sent     28  41.79k       0     201   44.30  166.51   58.94       0
+# Rows examine   0  41.79k       0     201   44.30  166.51   58.94       0
+# Query size     0  53.51k      55      57   56.72   56.92       1   56.92
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ###################
+# 100us  #####################################
+#   1ms  ################################################################
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM memos WHERE user='235'  ORDER BY created_at\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ref
+# possible_keys: memos_idx_user_created_at
+#           key: memos_idx_user_created_at
+#       key_len: 4
+#           ref: const
+#          rows: 66
+#         Extra: Using where
