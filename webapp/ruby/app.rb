@@ -18,8 +18,8 @@ class Isucon3App < Sinatra::Base
     set :erb, :escape_html => true
 
     def connection
-      config = JSON.parse(IO.read(File.dirname(__FILE__) + "/../config/#{ ENV['ISUCON_ENV'] || 'local' }.json"))['database']
       return $mysql if $mysql
+      config = JSON.parse(IO.read(File.dirname(__FILE__) + "/../config/#{ ENV['ISUCON_ENV'] || 'local' }.json"))['database']
       $mysql = Mysql2::Client.new(
         :host => config['host'],
         :port => config['port'],
@@ -31,12 +31,17 @@ class Isucon3App < Sinatra::Base
     end
 
     def get_user
-      mysql = connection
+      $users = {} unless $users
       user_id = session["user_id"]
       if user_id
-        user = mysql.xquery("SELECT * FROM users WHERE id=?", user_id).first
-        headers "Cache-Control" => "private"
+        user = $users[user_id]
+        unless user
+          mysql = connection
+          user = mysql.xquery("SELECT * FROM users WHERE id=?", user_id).first
+          $users[user_id] = user;
+        end
       end
+      headers "Cache-Control" => "private"
       return user || {}
     end
 
