@@ -29,3 +29,19 @@
     * 2,3,4...と数値を増やすごとにベンチマークで掛けられる負荷が上がります
     * スコアの集計は `workload` の値によらず、表示されたものが最終結果となります
 
+### 実行したコメントメモ
+
+設定ファイルをリポジトリ内に追加
+
+```
+mkdir misk
+cp /etc/supervisord.conf misc/
+cp /etc/nginx/nginx.conf misc/
+cp /usr/my.cnf misc/
+cp /etc/httpd/conf/httpd.conf misc/
+cp /etc/httpd/conf.d/isucon.conf misc/
+sudo ln -sfv misc/my.cnf /usr/my.cnf
+sudo /etc/init.d/mysql restart
+```
+
+
