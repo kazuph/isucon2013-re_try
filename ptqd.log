@@ -1,57 +1,57 @@
 
-# 20.6s user time, 370ms system time, 44.36M rss, 321.61M vsz
-# Current date: Sat Jul 19 14:40:35 2014
+# 19.2s user time, 240ms system time, 28.17M rss, 304.89M vsz
+# Current date: Sat Jul 19 16:55:57 2014
 # Hostname: ip-172-31-26-61
 # Files: /tmp/mysql-slow.log
-# Overall: 116.88k total, 48 unique, 1.38k QPS, 0.70x concurrency ________
-# Time range: 2014-07-19 14:38:50 to 14:40:15
+# Overall: 124.23k total, 15 unique, 1.88k QPS, 0.71x concurrency ________
+# Time range: 2014-07-19 16:54:31 to 16:55:37
 # Attribute          total     min     max     avg     95%  stddev  median
 # ============     ======= ======= ======= ======= ======= ======= =======
-# Exec time            59s     3us   296ms   506us   236us     6ms    20us
-# Lock time          790ms       0    11ms     6us    47us    53us       0
-# Rows sent        146.76k       0     201    1.29    0.99   11.09       0
-# Rows examine      10.08M       0  20.16k   90.39    0.99   1.16k       0
-# Query size       143.16M      13 1021.73k   1.25k   40.45  34.54k   40.45
+# Exec time            47s    13us   368ms   377us   204us     5ms    22us
+# Lock time          300ms       0     5ms     2us       0    23us       0
+# Rows sent        154.61k       0     206    1.27       0   11.76       0
+# Rows examine      11.16M       0  20.67k   94.20       0   1.22k       0
+# Query size         5.06M      14     560   42.70   42.48   16.94   40.45
 
 # Profile
 # Rank Query ID           Response time Calls  R/Call V/M   Item
-# ==== ================== ============= ====== ====== ===== ==============
-#    1 0x4517399CB130EF84 36.7611 62.1%   1085 0.0339  0.05 SELECT memos
-#    2 0x88929194AB4B746F 10.5769 17.9%    140 0.0755  0.03 INSERT UPDATE DELETE REPLACE DELETE UPDATE DELETE SELECT UPDATE SELECT DELETE UPDATE SELECT DELETE UPDATE memos
-#    3 0x8ED61FE2C1C9A2A1  7.1085 12.0% 109666 0.0001  0.00 SELECT users
-#    4 0x08E3E2CA950A9030  1.5160  2.6%   1085 0.0014  0.01 SELECT memos
-#    5 0x391C57CEB1157B93  1.2866  2.2%    966 0.0013  0.00 SELECT memos
-# MISC 0xMISC              1.9828  3.3%   3939 0.0005   0.0 <43 ITEMS>
+# ==== ================== ============= ====== ====== ===== ============
+#    1 0x4517399CB130EF84 36.1401 77.2%   1167 0.0310  0.05 SELECT memos
+#    2 0x8ED61FE2C1C9A2A1  5.8590 12.5% 117944 0.0000  0.00 SELECT users
+#    3 0x08E3E2CA950A9030  1.7696  3.8%   1167 0.0015  0.01 SELECT memos
+#    4 0x391C57CEB1157B93  1.3737  2.9%   1032 0.0013  0.00 SELECT memos
+# MISC 0xMISC              1.6958  3.6%   2920 0.0006   0.0 <11 ITEMS>
 
-# Query 1: 17.79 QPS, 0.60x concurrency, ID 0x4517399CB130EF84 at byte 157145707
+# Query 1: 18.82 QPS, 0.58x concurrency, ID 0x4517399CB130EF84 at byte 157712
+# This item is included in the report because it matches --limit.
 # Scores: V/M = 0.05
-# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Time range: 2014-07-19 16:54:31 to 16:55:33
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0    1085
-# Exec time     62     37s    27us   236ms    34ms   116ms    42ms    10ms
-# Lock time      6    55ms       0     2ms    50us   103us    59us    57us
-# Rows sent     48  70.61k       0     100   66.64   97.36   45.90   97.36
-# Rows examine  64   6.48M       0  20.12k   6.12k  19.40k   6.99k   1.69k
-# Query size     0  94.38k      82      95   89.07   92.72    6.26   92.72
+# Count          0    1167
+# Exec time     77     36s    25us   368ms    31ms   105ms    41ms     8ms
+# Lock time     19    58ms       0   159us    50us   108us    37us    60us
+# Rows sent     49  76.27k       0     100   66.92   97.36   45.81   97.36
+# Rows examine  61   6.89M       0  20.61k   6.05k  20.37k   7.14k   1.46k
+# Query size     1 101.40k      82      95   88.98   92.72    6.26   92.72
 # String:
 # Databases    isucon
 # Hosts        localhost
 # Users        isucon
 # Query_time distribution
 #   1us
-#  10us  ##############################################
-# 100us  #########
-#   1ms  ######################
+#  10us  #################################################
+# 100us  ##############
+#   1ms  ################
 #  10ms  ################################################################
-# 100ms  ###############
+# 100ms  #############
 #    1s
 #  10s+
 # Tables
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
 #    SHOW CREATE TABLE `isucon`.`memos`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 20400\G
+SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 10200\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -62,49 +62,21 @@ SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 1
 #           key: memos_idx_is_private_created_at
 #       key_len: 1
 #           ref: const
-#          rows: 29608
+#          rows: 31059
 #         Extra: Using where
 
-# Query 2: 11.67 QPS, 0.88x concurrency, ID 0x88929194AB4B746F at byte 132824114
-# Scores: V/M = 0.03
-# Time range: 2014-07-19 14:38:51 to 14:39:03
-# Attribute    pct   total     min     max     avg     95%  stddev  median
-# ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     140
-# Exec time     17     11s    32ms   296ms    76ms   148ms    45ms    65ms
-# Lock time      0       0       0       0       0       0       0       0
-# Rows sent      0       0       0       0       0       0       0       0
-# Rows examine   0       0       0       0       0       0       0       0
-# Query size    96 138.38M 813.06k 1021.73k 1012.13k 1009.33k  26.04k 1009.33k
-# String:
-# Databases    isucon
-# Hosts        localhost
-# Users        isucon
-# Query_time distribution
-#   1us
-#  10us
-# 100us
-#   1ms
-#  10ms  ################################################################
-# 100ms  #################
-#    1s
-#  10s+
-# Tables
-#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
-#    SHOW CREATE TABLE `isucon`.`memos`\G
-INSERT INTO `memos` VALUES (37630,369,'npm-faq(7) -- Frequently Asked Questions\n========================================\n\n## Where can I find these docs in HTML?\n\n<https://npmjs.org/doc/>, or run:\n\n    npm config set viewer browser\n\nto open these documents in your default web browser rather than `man`.\n\n## It didn\'t work.\n\nThat\'s not really a question.\n\n## Why didn\'t it work?\n\nI don\'t know yet.\n\nRead the error output, and if you can\'t figure out what it means,\ndo what it says and post a bug with all the information it asks for.\n\n## Where does npm put stuff?\n\nSee `npm-folders(5)`\n\ntl;dr:\n\n* Use the `npm root` command to see where modules go, and the `npm bin`\n  command to see where executables go\n* Global installs are different from local installs.  If you install\n  something with the `-g` flag, then its executables go in `npm bin -g`\n  and its modules go in `npm root -g`.\n\n## How do I install something on my computer in a central location?\n\nInstall it globally by tacking `-g` or `--global` to the command.  (This\nis especially important for command line utilities that need to add\ntheir bins to the global system `PATH`.)\n\n## I installed something globally, but I can\'t `require()` it\n\nInstall it locally.\n\nThe global install location is a place for command-line utilities\nto put their bins in the system `PATH`.  It\'s not for use with `require()`.\n\nIf you `require()` a module in your code, then that means it\'s a\ndependency, and a part of your program.  You need to install it locally\nin your program.\n\n## Why can\'t npm just put everything in one place, like other package managers?\n\nNot every change is an improvement, but every improvement is a change.\nThis would be like asking git to do network IO for every commit.  It\'s\nnot going to happen, because it\'s a terrible idea that causes more\nproblems than it solves.\n\nIt is much harder to avoid dependency conflicts without nesting\ndependencies.  This is fundamental to the way that npm works, and has\nproven to be an extremely successful approach.  See `npm-folders(5)` for\nmore details.\n\nIf you want a package to be installed in one place, and have all your\nprograms reference the same copy of it, then use the `npm link` command.\nThat\'s what it\'s for.  Install it globally, then link it into each\nprogram that uses it.\n\n## Whatever, I really want the old style \'everything global\' style.\n\nWrite your own package manager, then.  It\'s not that hard.\n\nnpm will not help you do something that is known to be a bad idea.\n\n## Should I check my `node_modules` folder into git?\n\nMikeal Rogers answered this question very well:\n\n<http://www.mikealrogers.com/posts/nodemodules-in-git.html>\n\ntl;dr\n\n* Check `node_modules` into git for things you **deploy**, such as\n  websites and apps.\n* Do not check `node_modules` into git for libraries and modules\n  intended to be reused.\n* Use npm to manage dependencies in your dev environment, but not in\n  your deployment scripts.\n\n## Is it \'npm\' or \'NPM\' or \'Npm\'?\n\nnpm should never be capitalized unless it is being displayed in a\nlocation that is customarily all-caps (such as the title of man pages.)\n\n## If \'npm\' is an acronym, why is it never capitalized?\n\nContrary to the belief of many, \"npm\" is not in fact an abbreviation for\n\"Node Package Manager\".  It is a recursive bacronymic abbreviation for\n\"npm is not an acronym\".  (If it was \"ninaa\", then it would be an\nacronym, and thus incorrectly named.)\n\n\"NPM\", however, *is* an acronym (more precisely, a capitonym) for the\nNational Association of Pastoral Musicians.  You can learn more\nabout them at <http://npm.org/>.\n\nIn software, \"NPM\" is a Non-Parametric Mapping utility written by\nChris Rorden.  You can analyze pictures of brains with it.  Learn more\nabout the (capitalized) NPM program at <http://www.cabiatl.com/mricro/npm/>.\n\nThe first seed that eventually grew into this flower was a bash utility\nnamed \"pm\", which was a shortened descendent of \"pkgmakeinst\", a\nbash function that was used to install various different things on different\nplatforms, most often using Yahoo\'s `yinst`.  If `npm` was ever an\nacronym for anything, it was `node pm` or maybe `new pm`.\n\nSo, in all seriousness, the \"npm\" project is named after its command-line\nutility, which was organically selected to be easily typed by a right-handed\nprogrammer using a US QWERTY keyboard layout, ending with the\nright-ring-finger in a postition to type the `-` key for flags and\nother command-line arguments.  That command-line utility is always\nlower-case, though it starts most sentences it is a part of.\n\n## How do I list installed packages?\n\n`npm ls`\n\n## How do I search for packages?\n\n`npm search`\n\nArguments are greps.  `npm search jsdom` shows jsdom packages.\n\n## How do I update npm?\n\n    npm update npm -g\n\nYou can also update all outdated local packages by doing `npm update` without\nany arguments, or global packages by doing `npm update -g`.\n\nOccasionally, the version of npm will progress such that the current\nversion cannot be properly installed with the version that you have\ninstalled already.  (Consider, if there is ever a bug in the `update`\ncommand.)\n\nIn those cases, you can do this:\n\n    curl https://npmjs.org/install.sh | sh\n\n## What is a `package`?\n\nA package is:\n\n* a) a folder containing a program described by a package.json file\n* b) a gzipped tarball containing (a)\n* c) a url that resolves to (b)\n* d) a `<name>@<version>` that is published on the registry with (c)\n* e) a `<name>@<tag>` that points to (d)\n* f) a `<name>` that has a \"latest\" tag satisfying (e)\n* g) a `git` url that, when cloned, results in (a).\n\nEven if you never publish your package, you can still get a lot of\nbenefits of using npm if you just want to write a node program (a), and\nperhaps if you also want to be able to easily install it elsewhere\nafter packing it up into a tarball (b).\n\nGit urls can be of the form:\n\n    git://github.com/user/project.git#commit-ish\n    git+ssh://user@hostname:project.git#commit-ish\n    git+http://user@hostname/project/blah.git#commit-ish\n    git+https://user@hostname/project/blah.git#commit-ish\n\nThe `commit-ish` can be any tag, sha, or branch which can be supplied as\nan argument to `git checkout`.  The default is `master`.\n\n## What is a `module`?\n\nA module is anything that can be loaded with `require()` in a Node.js\nprogram.  The following things are all examples of things that can be\nloaded as modules:\n\n* A folder with a `package.json` file containing a `main` field.\n* A folder with an `index.js` file in it.\n* A JavaScript file.\n\nMost npm packages are modules, because they are libraries that you\nload with `require`.  However, there\'s no requirement that an npm\npackage be a module!  Some only contain an executable command-line\ninterface, and don\'t provide a `main` field for use in Node programs.\n\nAlmost all npm packages (at least, those that are Node programs)\n*contain* many modules within them (because every file they load with\n`require()` is a module).\n\nIn the context of a Node program, the `module` is also the thing that\nwas loaded *from* a file.  For example, in the following program:\n\n    var req = require(\'request\')\n\nwe might say that \"The variable `req` refers to the `request` module\".\n\n## So, why is it the \"`node_modules`\" folder, but \"`package.json`\" file?  Why not `node_packages` or `module.json`?\n\nThe `package.json` file defines the package.  (See \"What is a\npackage?\" above.)\n\nThe `node_modules` folder is the place Node.js looks for modules.\n(See \"What is a module?\" above.)\n\nFor example, if you create a file at `node_modules/foo.js` and then\nhad a program that did `var f = require(\'foo.js\')` then it would load\nthe module.  However, `foo.js` is not a \"package\" in this case,\nbecause it does not have a package.json.\n\nAlternatively, if you create a package which does not have an\n`index.js` or a `\"main\"` field in the `package.json` file, then it is\nnot a module.  Even if it\'s installed in `node_modules`, it can\'t be\nan argument to `require()`.\n\n## `\"node_modules\"` is the name of my deity\'s arch-rival, and a Forbidden Word in my religion.  Can I configure npm to use a different folder?\n\nNo.  This will never happen.  This question comes up sometimes,\nbecause it seems silly from the outside that npm couldn\'t just be\nconfigured to put stuff somewhere else, and then npm could load them\nfrom there.  It\'s an arbitrary spelling choice, right?  What\'s the big\ndeal?\n\nAt the time of this writing, the string `\'node_modules\'` appears 151\ntimes in 53 separate files in npm and node core (excluding tests and\ndocumentation).\n\nSome of these references are in node\'s built-in module loader.  Since\nnpm is not involved **at all** at run-time, node itself would have to\nbe configured to know where you\'ve decided to stick stuff.  Complexity\nhurdle #1.  Since the Node module system is locked, this cannot be\nchanged, and is enough to kill this request.  But I\'ll continue, in\ndeference to your deity\'s delicate feelings regarding spelling.\n\nMany of the others are in dependencies that npm uses, which are not\nnecessarily tightly coupled to npm (in the sense that they do not read\nnpm\'s configuration files, etc.)  Each of these would have to be\nconfigured to take the name of the `node_modules` folder as a\nparameter.  Complexity hurdle #2.\n\nFurthermore, npm has the ability to \"bundle\" dependencies by adding\nthe dep names to the `\"bundledDependencies\"` list in package.json,\nwhich causes the folder to be included in the package tarball.  What\nif the author of a module bundles its dependencies, and they use a\ndifferent spelling for `node_modules`?  npm would have to rename the\nfolder at publish time, and then be smart enough to unpack it using\nyour locally configured name.  Complexity hurdle #3.\n\nFurthermore, what happens when you *change* this name?  Fine, it\'s\neasy enough the first time, just rename the `node_modules` folders to\n`./blergyblerp/` or whatever name you choose.  But what about when you\nchange it again?  npm doesn\'t currently track any state about past\nconfiguration settings, so this would be rather difficult to do\nproperly.  It would have to track every previous value for this\nconfig, and always accept any of them, or else yesterday\'s install may\nbe broken tomorrow.  Complexity hurdle #5.\n\nNever going to happen.  The folder is named `node_modules`.  It is\nwritten indelibly in the Node Way, handed down from the ancient times\nof Node 0.3.\n\n## How do I install node with npm?\n\nYou don\'t.  Try one of these node version managers:\n\nUnix:\n\n* <http://github.com/isaacs/nave>\n* <http://github.com/visionmedia/n>\n* <http://github.com/creationix/nvm>\n\nWindows:\n\n* <http://github.com/marcelklehr/nodist>\n* <https://github.com/hakobera/nvmw>\n\n## How can I use npm for development?\n\nSee `npm-developers(7)` and `package.json(5)`.\n\nYou\'ll most likely want to `npm link` your development folder.  That\'s\nawesomely handy.\n\nTo set up your own private registry, check out `npm-registry(7)`.\n\n## Can I list a url as a dependency?\n\nYes.  It should be a url to a gzipped tarball containing a single folder\nthat has a package.json in its root, or a git url.\n(See \"what is a package?\" above.)\n\n## How do I symlink to a dev folder so I don\'t have to keep re-installing?\n\nSee `npm-link(1)`\n\n## The package registry website.  What is that exactly?\n\nSee `npm-registry(7)`.\n\n## I forgot my password, and can\'t publish.  How do I reset it?\n\nGo to <https://npmjs.org/forgot>.\n\n## I get ECONNREFUSED a lot.  What\'s up?\n\nEither the registry is down, or node\'s DNS isn\'t able to reach out.\n\nTo check if the registry is down, open up <http://registry.npmjs.org/>\nin a web browser.  This will also tell you if you are just unable to\naccess the internet for some reason.\n\nIf the registry IS down, let me know by emailing <i@izs.me> or posting\nan issue at <https://github.com/isaacs/npm/issues>.  We\'ll have\nsomeone kick it or something.\n\n## Why no namespaces?\n\nPlease see this discussion: <https://github.com/isaacs/npm/issues/798>\n\ntl;dr - It doesn\'t actually make things better, and can make them worse.\n\nIf you want to namespace your own packages, you may: simply use the\n`-` character to separate the names.  npm is a mostly anarchic system.\nThere is not sufficient need to impose namespace rules on everyone.\n\n## Who does npm?\n\n`npm view npm author`\n\n`npm view npm contributors`\n\n## I have a question or request not addressed here. Where should I put it?\n\nPost an issue on the github project:\n\n* <https://github.com/isaacs/npm/issues>\n\n## Why does npm hate me?\n\nnpm is not capable of hatred.  It loves everyone, especially you.\n\n## SEE ALSO\n\n* npm(1)\n* npm-developers(7)\n* package.json(5)\n* npm-config(1)\n* npm-config(7)\n* npmrc(5)\n* npm-config(7)\n* npm-folders(5)\n',0,'2013-10-04 07:06:22','2013-10-04 11:39:46') /*... omitted ...*/\G
-
-# Query 3: 1.80k QPS, 0.12x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 163052047
+# Query 2: 1.90k QPS, 0.09x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 7192688
+# This item is included in the report because it matches --limit.
 # Scores: V/M = 0.00
-# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Time range: 2014-07-19 16:54:31 to 16:55:33
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count         93  109666
-# Exec time     12      7s    12us    25ms    64us   204us   235us    20us
-# Lock time     65   516ms       0    11ms     4us    42us    53us       0
-# Rows sent      6   9.43k       0       1    0.09    0.99    0.28       0
-# Rows examine   0   9.43k       0       1    0.09    0.99    0.28       0
-# Query size     2   4.26M      39      41   40.70   40.45    0.81   40.45
+# Count         94  117944
+# Exec time     12      6s    13us    28ms    49us   185us   184us    21us
+# Lock time     10    32ms       0     5ms       0       0    17us       0
+# Rows sent      0     405       0       1    0.00       0    0.06       0
+# Rows examine   0     405       0       1    0.00       0    0.06       0
+# Query size    90   4.57M      39      41   40.64   40.45    0.88   40.45
 # String:
 # Databases    isucon
 # Hosts        localhost
@@ -112,7 +84,7 @@ INSERT INTO `memos` VALUES (37630,369,'npm-faq(7) -- Frequently Asked Questions\
 # Query_time distribution
 #   1us
 #  10us  ################################################################
-# 100us  #################
+# 100us  #########
 #   1ms  #
 #  10ms  #
 # 100ms
@@ -122,7 +94,7 @@ INSERT INTO `memos` VALUES (37630,369,'npm-faq(7) -- Frequently Asked Questions\
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'users'\G
 #    SHOW CREATE TABLE `isucon`.`users`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT username FROM users WHERE id='89'\G
+SELECT username FROM users WHERE id='143'\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -136,17 +108,18 @@ SELECT username FROM users WHERE id='89'\G
 #          rows: 1
 #         Extra: NULL
 
-# Query 4: 17.79 QPS, 0.02x concurrency, ID 0x08E3E2CA950A9030 at byte 163556273
+# Query 3: 18.82 QPS, 0.03x concurrency, ID 0x08E3E2CA950A9030 at byte 32120
+# This item is included in the report because it matches --limit.
 # Scores: V/M = 0.01
-# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Time range: 2014-07-19 16:54:31 to 16:55:33
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0    1085
-# Exec time      2      2s    14us    22ms     1ms     9ms     3ms    25us
-# Lock time      1    12ms       0   226us    10us    66us    25us       0
-# Rows sent      0     179       0       1    0.16    0.99    0.37       0
-# Rows examine  34   3.51M       0  20.16k   3.32k  19.40k   7.20k       0
-# Query size     0  52.98k      50      50      50      50       0      50
+# Count          0    1167
+# Exec time      3      2s    13us    30ms     2ms     9ms     3ms    26us
+# Lock time      7    22ms       0     2ms    18us    66us   104us       0
+# Rows sent      0     208       0       1    0.18    0.99    0.38       0
+# Rows examine  37   4.19M       0  20.67k   3.68k  20.37k   7.79k       0
+# Query size     1  56.98k      50      50      50      50       0      50
 # String:
 # Databases    isucon
 # Hosts        localhost
@@ -156,7 +129,7 @@ SELECT username FROM users WHERE id='89'\G
 #  10us  ################################################################
 # 100us  #
 #   1ms  ##########
-#  10ms  ##
+#  10ms  ###
 # 100ms
 #    1s
 #  10s+
@@ -175,28 +148,29 @@ SELECT count(*) AS c FROM memos WHERE is_private=0\G
 #           key: memos_idx_is_private_created_at
 #       key_len: 1
 #           ref: const
-#          rows: 29608
+#          rows: 31059
 #         Extra: Using index
 
-# Query 5: 15.84 QPS, 0.02x concurrency, ID 0x391C57CEB1157B93 at byte 160398585
+# Query 4: 16.92 QPS, 0.02x concurrency, ID 0x391C57CEB1157B93 at byte 13111139
+# This item is included in the report because it matches --limit.
 # Scores: V/M = 0.00
-# Time range: 2014-07-19 14:39:09 to 14:40:10
+# Time range: 2014-07-19 16:54:32 to 16:55:33
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0     966
-# Exec time      2      1s    24us    12ms     1ms     3ms     1ms     1ms
-# Lock time      4    34ms       0     1ms    35us    98us    52us       0
-# Rows sent     28  41.79k       0     201   44.30  166.51   58.94       0
-# Rows examine   0  41.79k       0     201   44.30  166.51   58.94       0
-# Query size     0  53.51k      55      57   56.72   56.92       1   56.92
+# Count          0    1032
+# Exec time      2      1s    24us    13ms     1ms     3ms     1ms     1ms
+# Lock time     12    39ms       0   155us    37us   108us    41us       0
+# Rows sent     31  49.29k       0     206   48.91  183.58   65.09       0
+# Rows examine   0  49.29k       0     206   48.91  183.58   65.09       0
+# Query size     1  57.24k      55      57   56.79   56.92       1   56.92
 # String:
 # Databases    isucon
 # Hosts        localhost
 # Users        isucon
 # Query_time distribution
 #   1us
-#  10us  ###################
-# 100us  #####################################
+#  10us  #####################
+# 100us  #######################################
 #   1ms  ################################################################
 #  10ms  #
 # 100ms
@@ -206,7 +180,7 @@ SELECT count(*) AS c FROM memos WHERE is_private=0\G
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
 #    SHOW CREATE TABLE `isucon`.`memos`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE user='235'  ORDER BY created_at\G
+SELECT * FROM memos WHERE user='289'  ORDER BY created_at\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -217,5 +191,5 @@ SELECT * FROM memos WHERE user='235'  ORDER BY created_at\G
 #           key: memos_idx_user_created_at
 #       key_len: 4
 #           ref: const
-#          rows: 66
+#          rows: 170
 #         Extra: Using where
