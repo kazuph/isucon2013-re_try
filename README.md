@@ -29,6 +29,18 @@
     * 2,3,4...と数値を増やすごとにベンチマークで掛けられる負荷が上がります
     * スコアの集計は `workload` の値によらず、表示されたものが最終結果となります
 
+### 便利コマンドをbashrcに追加
+
+cat <<EOF >> .bashrc
+alias st="sudo supervisorctl status"
+alias re="sudo supervisorctl restart isucon_ruby"
+alias te="sudo isucon3 test --workload 1"
+alias b1="sudo isucon3 benchmark --workload 1"
+alias b2="sudo isucon3 benchmark --workload 2"
+alias b3="sudo isucon3 benchmark --workload 3"
+alias b4="sudo isucon3 benchmark --workload 4"
+EOF
+
 ### 実行したコメントメモ
 
 設定ファイルをリポジトリ内に追加
