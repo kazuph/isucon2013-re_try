@@ -1,0 +1,277 @@
+
+# 14.9s user time, 260ms system time, 28.27M rss, 304.91M vsz
+# Current date: Sat Jul 19 13:55:20 2014
+# Hostname: ip-172-31-26-61
+# Files: /tmp/mysql-slow.log
+# Overall: 95.78k total, 24 unique, 319.28 QPS, 0.33x concurrency ________
+# Time range: 2014-07-19 13:50:05 to 13:55:05
+# Attribute          total     min     max     avg     95%  stddev  median
+# ============     ======= ======= ======= ======= ======= ======= =======
+# Exec time            99s     4us   371ms     1ms   301us     8ms    25us
+# Lock time             1s       0     7ms    12us    52us    62us       0
+# Rows sent        156.76k       0     209    1.68    0.99   13.01       0
+# Rows examine      71.34M       0  66.30k  780.93    0.99   5.84k       0
+# Query size         3.90M      12     611   42.70   40.45   17.49   40.45
+
+# Profile
+# Rank Query ID           Response time Calls R/Call V/M   Item
+# ==== ================== ============= ===== ====== ===== ============
+#    1 0x4517399CB130EF84 46.2190 46.7%   885 0.0522  0.04 SELECT memos
+#    2 0x391C57CEB1157B93 20.2572 20.5%   892 0.0227  0.02 SELECT memos
+#    3 0x8ED61FE2C1C9A2A1  9.9204 10.0% 89564 0.0001  0.00 SELECT users
+#    4 0xD675B617BD90D308  8.6285  8.7%   168 0.0514  0.00 SELECT memos
+#    5 0x08E3E2CA950A9030  7.9165  8.0%   885 0.0089  0.12 SELECT memos
+#    6 0x2D9FC10839732BB8  4.7616  4.8%   172 0.0277  0.02 SELECT memos
+# MISC 0xMISC              1.2193  1.2%  3218 0.0004   0.0 <18 ITEMS>
+
+# Query 1: 14.75 QPS, 0.77x concurrency, ID 0x4517399CB130EF84 at byte 183302
+# Scores: V/M = 0.04
+# Time range: 2014-07-19 13:50:06 to 13:51:06
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     885
+# Exec time     46     46s    25us   371ms    52ms   128ms    45ms    46ms
+# Lock time      4    48ms       0   265us    54us   103us    38us    63us
+# Rows sent     38  60.35k       0     100   69.83   97.36   44.69   97.36
+# Rows examine  44  32.05M       0  66.30k  37.08k  65.68k  24.69k  44.45k
+# Query size     1  76.54k      82      95   88.56   92.72    6.30   92.72
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ####################################
+# 100us  #
+#   1ms
+#  10ms  ################################################################
+# 100ms  ####################
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 21200\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ALL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: 97546
+#         Extra: Using where; Using filesort
+
+# Query 2: 14.87 QPS, 0.34x concurrency, ID 0x391C57CEB1157B93 at byte 1510119
+# Scores: V/M = 0.02
+# Time range: 2014-07-19 13:50:06 to 13:51:06
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     892
+# Exec time     20     20s    24us    97ms    23ms    61ms    23ms     4ms
+# Lock time      3    35ms       0   285us    39us   108us    41us       0
+# Rows sent     33  52.40k       0     209   60.15  183.58   69.63       0
+# Rows examine  26  19.19M       0  44.42k  22.03k  42.34k  21.17k       0
+# Query size     1  49.48k      55      57   56.81   56.92       1   56.92
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ###############
+# 100us  ####################
+#   1ms  ############################
+#  10ms  ################################################################
+# 100ms  #
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM memos WHERE user='233'  ORDER BY created_at\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ALL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: 97546
+#         Extra: Using where; Using filesort
+
+# Query 3: 1.49k QPS, 0.17x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 2377335
+# Scores: V/M = 0.00
+# Time range: 2014-07-19 13:50:06 to 13:51:06
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count         93   89564
+# Exec time     10     10s    13us    19ms   110us   273us   371us    23us
+# Lock time     76   882ms       0     7ms     9us    44us    60us       0
+# Rows sent     10  16.34k       0       1    0.19    0.99    0.39       0
+# Rows examine   0  16.34k       0       1    0.19    0.99    0.39       0
+# Query size    89   3.47M      39      41   40.65   40.45    0.86   40.45
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  ###########################################
+#   1ms  #
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'users'\G
+#    SHOW CREATE TABLE `isucon`.`users`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT username FROM users WHERE id='65'\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: users
+#    partitions: NULL
+#          type: const
+# possible_keys: PRIMARY
+#           key: PRIMARY
+#       key_len: 4
+#           ref: const
+#          rows: 1
+#         Extra: NULL
+
+# Query 4: 2.85 QPS, 0.15x concurrency, ID 0xD675B617BD90D308 at byte 11231798
+# Scores: V/M = 0.00
+# Time range: 2014-07-19 13:50:06 to 13:51:05
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     168
+# Exec time      8      9s    21ms    98ms    51ms    78ms    16ms    48ms
+# Lock time      0    10ms    46us   114us    59us    63us     7us    57us
+# Rows sent     12  19.42k      10     208  118.40  192.76   53.82  124.25
+# Rows examine  10   7.26M  44.12k  44.42k  44.26k  42.34k    0.00  42.34k
+# Query size     0  17.52k     105     107  106.79  102.22       0  102.22
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms  ################################################################
+# 100ms  #
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user='209' ORDER BY created_at DESC\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ALL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: 97546
+#         Extra: Using where; Using filesort
+
+# Query 5: 14.75 QPS, 0.13x concurrency, ID 0x08E3E2CA950A9030 at byte 2474
+# Scores: V/M = 0.12
+# Time range: 2014-07-19 13:50:06 to 13:51:06
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     885
+# Exec time      8      8s    16us   368ms     9ms    31ms    33ms    26us
+# Lock time      2    25ms       0     3ms    27us    73us   159us       0
+# Rows sent      0     192       0       1    0.22    0.99    0.41       0
+# Rows examine  11   8.28M       0  44.23k   9.58k  42.34k  17.45k       0
+# Query size     1  43.21k      50      50      50      50       0      50
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ################################################################
+# 100us  #
+#   1ms
+#  10ms  #################
+# 100ms  #
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT count(*) AS c FROM memos WHERE is_private=0\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ALL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: 97546
+#         Extra: Using where
+
+# Query 6: 2.92 QPS, 0.08x concurrency, ID 0x2D9FC10839732BB8 at byte 795318
+# Scores: V/M = 0.02
+# Time range: 2014-07-19 13:50:07 to 13:51:06
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     172
+# Exec time      4      5s    27us    81ms    28ms    61ms    23ms    36ms
+# Lock time      1    13ms       0     3ms    74us   125us   238us    69us
+# Rows sent      4   6.32k       0     109   37.65   92.72   36.21   30.19
+# Rows examine   6   4.53M       0  44.32k  26.99k  42.34k  20.65k  42.34k
+# Query size     0  12.23k      71      73   72.80   72.65       1   72.65
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ######################
+# 100us  #################
+#   1ms  #
+#  10ms  ################################################################
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM memos WHERE user='225' AND is_private=0 ORDER BY created_at\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ALL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: 97546
+#         Extra: Using where; Using filesort
