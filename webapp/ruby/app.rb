@@ -12,9 +12,10 @@ class Isucon3App < Sinatra::Base
   $stdout.sync = true
   enable :logging
 
+  $dc = Dalli::Client.new('localhost:11212')
   use Rack::Session::Dalli, {
     :key => 'isucon_session',
-    :cache => Dalli::Client.new('localhost:11212')
+    :cache => $dc
   }
 
   helpers do
@@ -82,10 +83,8 @@ class Isucon3App < Sinatra::Base
     mysql = connection
     user  = get_user
 
-    total = mysql.query("SELECT count(*) AS c FROM memos WHERE is_private=0").first["c"]
+    total = $dc.get("memos_total_private_0")
 
-    # TODO: N+1問題
-    # memos = mysql.query("SELECT memos.*, users.username FROM memos JOIN users ON memos.user = users.id WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100")
     memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100) AS tmp ON tmp.id = memos.id;")
     erb :index, :layout => :base, :locals => {
       :memos => memos,
@@ -100,7 +99,9 @@ class Isucon3App < Sinatra::Base
     user  = get_user
 
     page  = params["page"].to_i
-    total = mysql.xquery('SELECT count(*) AS c FROM memos WHERE is_private=0').first["c"]
+
+    total = $dc.get("memos_total_private_0")
+
     # memos = mysql.xquery("SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET #{page * 100}")
     memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100 OFFSET #{page * 100}) AS tmp ON tmp.id = memos.id;")
     if memos.count == 0
@@ -217,6 +218,8 @@ class Isucon3App < Sinatra::Base
       params["is_private"].to_i,
       Time.now,
     )
+    logger.info("get mem #{$dc.get("memos_total_private_0")}")
+    $dc.incr("memos_total_private_0")
     memo_id = mysql.last_id
     redirect "/memo/#{memo_id}"
   end
