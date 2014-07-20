@@ -1,6 +1,11 @@
 #!/bin/sh
 SEC=`date --iso-8601=seconds`
 DATE=`date +'%Y%m%d-%H%M%S'`
+
+
+## NGINX
+echo NGINX REPO
+
 # LTSVなログ前提
 LOG_BASE=/home/isucon/tmp
 
@@ -25,4 +30,14 @@ mv $LOG_BASE/access.log $LOG_BASE/access.log.${DATE}
 touch $LOG_BASE/access.log
 
 # restart
-sudo supervisorctl restart nginx
+sudo supervisorctl restart nginx &
+
+## MySQL
+
+sudo mv /tmp/mysql-slow.log ~/tmp/mysql-slow.log
+sudo chown isucon.isucon ~/tmp/mysql-slow.log
+pt-query-digest ~/tmp/mysql-slow.log --explain h=localhost,u=isucon --database=isucon > tmp/ptqd.log.${DATE}
+sudo mv ~/tmp/mysql-slow.log ~/tmp/mysql-slow.log.${DATE}
+
+# restart
+sudo /etc/init.d/mysql restart &
