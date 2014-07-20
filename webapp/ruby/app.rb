@@ -86,7 +86,10 @@ class Isucon3App < Sinatra::Base
 
     # TODO: N+1問題
     # memos = mysql.query("SELECT memos.*, users.username FROM memos JOIN users ON memos.user = users.id WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100")
-    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos ORDER BY id DESC LIMIT 100) AS tmp ON tmp.memo = memos.id;")
+    #
+    #
+    public_count = mysql.query("SELECT cnt from public_count;").first['cnt']
+    memos = mysql.xquery("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos WHERE id BETWEEN ? AND ? ORDER BY id) AS tmp ON tmp.memo = memos.id;", public_count - 99, public_count)
     erb :index, :layout => :base, :locals => {
       :memos => memos,
       :page  => 0,
@@ -223,6 +226,7 @@ class Isucon3App < Sinatra::Base
         'INSERT INTO public_memos (memo) VALUES (?)',
         memo_id
       )
+      mysql.xquery('UPDATE public_count SET cnt = cnt + 1;')
      end
     redirect "/memo/#{memo_id}"
   end

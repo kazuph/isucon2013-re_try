@@ -14,6 +14,8 @@ mysql = Mysql2::Client.new(
 :reconnect => true,
 )
 
+  
+mysql.xquery('UPDATE public_count SET cnt = 20540;')
 mysql.xquery('DELETE FROM public_memos;')
 mysql.xquery('ALTER TABLE public_memos AUTO_INCREMENT = 0;')
 p memos = mysql.query("SELECT id FROM memos WHERE is_private=0 ORDER BY id;").map{|o|o['id']}
