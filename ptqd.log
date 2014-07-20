@@ -1,57 +1,61 @@
 
-# 19.2s user time, 240ms system time, 28.17M rss, 304.89M vsz
-# Current date: Sat Jul 19 16:55:57 2014
-# Hostname: ip-172-31-26-61
+# 24.3s user time, 410ms system time, 46.33M rss, 288.97M vsz
+# Current date: Sun Jul 20 01:51:42 2014
+# Hostname: ip-172-31-24-78
 # Files: /tmp/mysql-slow.log
-# Overall: 124.23k total, 15 unique, 1.88k QPS, 0.71x concurrency ________
-# Time range: 2014-07-19 16:54:31 to 16:55:37
+# Overall: 151.52k total, 200 unique, 153.21 QPS, 0.08x concurrency ______
+# Time range: 2014-07-20 01:34:49 to 01:51:18
 # Attribute          total     min     max     avg     95%  stddev  median
 # ============     ======= ======= ======= ======= ======= ======= =======
-# Exec time            47s    13us   368ms   377us   204us     5ms    22us
-# Lock time          300ms       0     5ms     2us       0    23us       0
-# Rows sent        154.61k       0     206    1.27       0   11.76       0
-# Rows examine      11.16M       0  20.67k   94.20       0   1.22k       0
-# Query size         5.06M      14     560   42.70   42.48   16.94   40.45
+# Exec time            84s     2us      2s   553us   236us    15ms    22us
+# Lock time          397ms       0    11ms     2us       0    43us       0
+# Rows sent        184.72k       0     446    1.25       0   11.49       0
+# Rows examine      13.09M       0  20.18k   90.60       0   1.16k       0
+# Query size       144.64M       7 1021.73k 1000.98   44.60  30.34k   40.45
 
 # Profile
 # Rank Query ID           Response time Calls  R/Call V/M   Item
-# ==== ================== ============= ====== ====== ===== ============
-#    1 0x4517399CB130EF84 36.1401 77.2%   1167 0.0310  0.05 SELECT memos
-#    2 0x8ED61FE2C1C9A2A1  5.8590 12.5% 117944 0.0000  0.00 SELECT users
-#    3 0x08E3E2CA950A9030  1.7696  3.8%   1167 0.0015  0.01 SELECT memos
-#    4 0x391C57CEB1157B93  1.3737  2.9%   1032 0.0013  0.00 SELECT memos
-# MISC 0xMISC              1.6958  3.6%   2920 0.0006   0.0 <11 ITEMS>
+# ==== ================== ============= ====== ====== ===== ==============
+#    1 0x4517399CB130EF84 41.8362 49.9%   1415 0.0296  0.05 SELECT memos
+#    2 0x88929194AB4B746F 10.3252 12.3%    140 0.0738  0.05 INSERT UPDATE DELETE UPDATE DELETE UPDATE SELECT DELETE UPDATE DELETE UPDATE DELETE UPDATE REPLACE DELETE UPDATE DELETE UPDATE DELETE SELECT DELETE UPDATE REPLACE DELETE UPDATE REPLACE UPDATE SELECT REPLACE DELETE UPDATE DELETE UPDATE DELETE SELECT UPDATE SELECT UPDATE DELETE REPLACE UPDATE SELECT DELETE memos
+#    3 0x8ED61FE2C1C9A2A1  6.8062  8.1% 143048 0.0000  0.00 SELECT users
+#    4 0x141F7DA30198D501  6.0007  7.2%      3 2.0002  0.00 INSERT async_test
+#    5 0xF9A57DD5A41825CA  6.0006  7.2%      3 2.0002  0.00 SELECT
+#    6 0x6CFE2C9224943DB4  4.0005  4.8%      2 2.0003  0.00 INSERT async_test
+#    7 0x00A4BF4929371F40  2.1913  2.6%    245 0.0089  0.31 INSERT memos
+#    8 0x391C57CEB1157B93  1.6893  2.0%   1308 0.0013  0.00 SELECT memos
+#    9 0x08E3E2CA950A9030  1.6596  2.0%   1415 0.0012  0.01 SELECT memos
+# MISC 0xMISC              3.3506  4.0%   3943 0.0008   0.0 <191 ITEMS>
 
-# Query 1: 18.82 QPS, 0.58x concurrency, ID 0x4517399CB130EF84 at byte 157712
-# This item is included in the report because it matches --limit.
+# Query 1: 15.55 QPS, 0.46x concurrency, ID 0x4517399CB130EF84 at byte 165907905
 # Scores: V/M = 0.05
-# Time range: 2014-07-19 16:54:31 to 16:55:33
+# Time range: 2014-07-20 01:35:07 to 01:36:38
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0    1167
-# Exec time     77     36s    25us   368ms    31ms   105ms    41ms     8ms
-# Lock time     19    58ms       0   159us    50us   108us    37us    60us
-# Rows sent     49  76.27k       0     100   66.92   97.36   45.81   97.36
-# Rows examine  61   6.89M       0  20.61k   6.05k  20.37k   7.14k   1.46k
-# Query size     1 101.40k      82      95   88.98   92.72    6.26   92.72
+# Count          0    1415
+# Exec time     49     42s    26us   500ms    30ms    95ms    38ms    11ms
+# Lock time     21    85ms       0    11ms    59us   103us   323us    54us
+# Rows sent     51  94.92k       0     100   68.69   97.36   45.15   97.36
+# Rows examine  64   8.38M       0  20.12k   6.06k  19.40k   6.90k   2.06k
+# Query size     0 123.22k      82      95   89.17   92.72    6.24   92.72
 # String:
 # Databases    isucon
 # Hosts        localhost
 # Users        isucon
 # Query_time distribution
 #   1us
-#  10us  #################################################
-# 100us  ##############
-#   1ms  ################
+#  10us  ################################
+# 100us  ##################
+#   1ms  ##################
 #  10ms  ################################################################
-# 100ms  #############
+# 100ms  ########
 #    1s
 #  10s+
 # Tables
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
 #    SHOW CREATE TABLE `isucon`.`memos`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 10200\G
+SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET 17500\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -62,21 +66,49 @@ SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 1
 #           key: memos_idx_is_private_created_at
 #       key_len: 1
 #           ref: const
-#          rows: 31059
+#          rows: 40740
 #         Extra: Using where
 
-# Query 2: 1.90k QPS, 0.09x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 7192688
-# This item is included in the report because it matches --limit.
-# Scores: V/M = 0.00
-# Time range: 2014-07-19 16:54:31 to 16:55:33
+# Query 2: 10.77 QPS, 0.79x concurrency, ID 0x88929194AB4B746F at byte 54932778
+# Scores: V/M = 0.05
+# Time range: 2014-07-20 01:34:49 to 01:35:02
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count         94  117944
-# Exec time     12      6s    13us    28ms    49us   185us   184us    21us
-# Lock time     10    32ms       0     5ms       0       0    17us       0
-# Rows sent      0     405       0       1    0.00       0    0.06       0
-# Rows examine   0     405       0       1    0.00       0    0.06       0
-# Query size    90   4.57M      39      41   40.64   40.45    0.88   40.45
+# Count          0     140
+# Exec time     12     10s    32ms   689ms    74ms   122ms    59ms    61ms
+# Lock time      0       0       0       0       0       0       0       0
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size    95 138.38M 813.06k 1021.73k 1012.13k 1009.33k  26.04k 1009.33k
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms  ################################################################
+# 100ms  ##############
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+INSERT INTO `memos` VALUES (15536,157,'## 1.3.5 (3 April 2013)\n\nFeatures:\n\n  - progress indicator while resolver is running (@chief)\n\nBugfixes:\n\n  - update local overrides with orphaned revisions (@jamesferguson)\n  - revert to working quoting of RUBYOPT on Windows (@ogra)\n  - use basic auth even when SSL is not available (@jayniz)\n  - installing git gems without dependencies in deployment now works\n\n## 1.3.4 (15 March 2103)\n\nBugfixes:\n\n  - load YAML on Rubygems versions that define module YAML\n  - fix regression that broke --without on ruby 1.8.7\n\n## 1.3.3 (13 March 2013)\n\nFeatures:\n\n  - compatible with Rubygems 2.0.2 (higher and lower already work)\n  - mention skipped groups in bundle install and bundle update output (@simi)\n  - `gem` creates rake tasks for minitest (@coop) and rspec\n\nBugfixes:\n\n  - require rbconfig for standalone mode\n\n## 1.3.2 (7 March 2013)\n\nFeatures:\n\n  - include rubygems.org CA chain\n\nBugfixes:\n\n  - don\'t store --dry-run as a Bundler setting\n\n## 1.3.1 (3 March 2013)\n\nBugfixes:\n\n  - include manpages in gem, restoring many help pages\n  - handle more SSL certificate verification failures\n  - check for the full version of SSL, which we need (@alup)\n  - gem rake task \'install\' now depends on task \'build\' (@sunaku)\n\n## 1.3.0 (24 February 2013)\n\nFeatures:\n\n  - raise a useful error when the lockfile contains a merge conflict (@zofrex)\n  - ensure `rake release` checks for uncommitted as well as unstaged (@benmoss)\n  - allow environment variables to be negated with \'false\' and \'0\' (@brettporter)\n  - set $MANPATH inside `exec` for gems with man pages (@sunaku)\n  - partial gem names for `open` and `update` now return a list (@takkanm)\n\nBugfixes:\n\n  - `update` now (again) finds gems that aren\'t listed in the Gemfile\n  - `install` now (again) updates cached gems that aren\'t in the Gemfile\n  - install Gemfiles with HTTP sources even without OpenSSL present\n  - display CerficateFailureError message in full\n\n## 1.3.0.pre.8 (12 February 2013)\n\nSecurity:\n\n  - validate SSL certificate chain during HTTPS network requests\n  - don\'t send HTTP Basic Auth creds when redirected to other hosts (@perplexes)\n  - add `--trust-policy` to `install`, like `gem install -P` (@CosmicCat, #2293)\n\nFeatures:\n\n  - optimize resolver when too new of a gem is already activated (@rykov, #2248)\n  - update Net::HTTP::Persistent for SSL cert validation and no_proxy ENV\n  - explain SSL cert validation failures\n  - generate gemspecs when installing git repos, removing shellouts\n  - add pager selection (@csgui)\n  - add `licenses` command (@bryanwoods, #1898)\n  - sort output from `outdated` (@richardkmichael, #1896)\n  - add a .travis.yml to `gem -t` (@ndbroadbent, #2143)\n  - inform users when the resolver starts\n  - disable reverse DNS to speed up API requests (@raggi)\n\nBugfixes:\n\n  - raise errors while requiring dashed gems (#1807)\n  - quote the Bundler path on Windows (@jgeiger, #1862, #1856)\n  - load gemspecs containing unicode (@gaffneyc, #2301)\n  - support any ruby version in --standalone\n  - resolve some ruby -w warnings (@chastell, #2193)\n  - don\'t scare users with an error message during API fallback\n  - `install --binstubs` is back to overwriting. thanks, SemVer.\n\n## 1.3.0.pre.7 (22 January 2013)\n\nBugfixes:\n\n  - stubs for gems with dev deps no longer cause exceptions (#2272)\n  - don\'t suggest binstubs to --binstubs users\n\n## 1.3.0.pre.6 (22 January 2013)\n\nFeatures:\n\n  - `binstubs` lists child gem bins if a gem has no binstubs\n  - `bundle gem --edit` will open the new gemspec (@ndbroadbent)\n  - `bundle gem --test rspec` now makes working tests (@tricknotes)\n  - add `BUNDLE_IGNORE_CONFIG` environment variable support (@richo)\n\nBugfixes:\n\n  - don\'t overwrite custom binstubs during `install --binstubs`\n  - don\'t throw an exception if `binstubs` gem doesn\'t exist\n  - `bundle config` now works in directories without a Gemfile\n\n## 1.3.0.pre.5 (Jan 9, 2013)\n\nFeatures:\n\n  - make `--standalone` require lines ruby engine/version agnostic\n  - add `--dry-run` to `bundle clean` (@wfarr, #2237)\n\nBugfixes:\n\n  - don\'t skip writing binstubs when doing `bundle install`\n  - distinguish between ruby 1.9/2.0 when using :platforms (@spastorino)\n\n## 1.3.0.pre.4 (Jan 3, 2013)\n\nFeatures:\n\n  - `bundle binstubs <gem>` to setup individual binstubs\n  - `bundle install --binstubs \"\"` will remove binstubs option\n  - `bundle clean --dry-run` will print out gems instead of removing them\n\nBugfixes:\n\n  - Avoid stack traces when Ctrl+C during bundle command (@mitchellh)\n  - fix YAML parsing in in ruby-preview2\n\n## 1.3.0.pre.3 (Dec 21, 2012)\n\nFeatures:\n\n  - pushing gems during `rake release` can be disabled (@trans)\n  - installing gems with `rake install` is much faster (@utkarshkukreti)\n  - added platforms :ruby_20 and :mri_20, since the ABI has changed\n  - added \'--edit\' option to open generated gemspec in editor\n\nBugfixes:\n\n  - :git gems with extensions now work with Rubygems >= 2.0 (@jeremy)\n  - revert SemVer breaking change to :github\n  - `outdated` exits non-zero if outdated gems found (@rohit, #2021)\n  - https Gist URLs for compatibility with Gist 2.0 (@NARKOZ)\n  - namespaced gems no longer generate a superfluous directory (@banyan)\n\n## 1.3.0.pre.2 (Dec 9, 2012)\n\nFeatures:\n\n  - `config` expands local overrides like `local.rack .` (@gkop, #2205)\n  - `gem` generates files correctly for names like `jquery-rails` (@banyan, #2201)\n  - use gems from gists with the :gist option in the Gemfile (@jgaskins)\n\nBugfixes:\n\n  - Gemfile sources other than rubygems.org work even when .gemrc contains sources\n  - caching git gems now caches specs, fixing e.g. git ls-files (@bison, #2039)\n  - `show GEM` now warns if the directory has been deleted (@rohit, #2070)\n  - git output hidden when running in --quiet mode (@rohit)\n\n## 1.3.0.pre (Nov 29, 2012)\n\nFeatures:\n\n  - compatibile with Ruby 2.0.0-preview2\n  - compatibile with Rubygems 2.0.0.preview2 (@drbrain, @evanphx)\n  - ruby 2.0 added to the `:ruby19` ABI-compatible platform\n  - lazy load YAML, allowing Psych to be specified in the Gemfile\n  - significant performance improvements (@cheald, #2181)\n  - `inject` command for scripted Gemfile additions (Engine Yard)\n  - :github option uses slashless arguements as repo owner (@rking)\n  - `open` suggests gem names for typos (@jdelStrother)\n  - `update` reports non-existent gems (@jdelStrother)\n  - `gem` option --test can generate rspec stubs (@MafcoCinco)\n  - `gem` option --test can generate minitest stubs (@kcurtin)\n  - `gem` command generates MIT license (@BrentWheeldon)\n  - gem rake task \'release\' resuses existing tags (@shtirlic)\n\nBugfixes:\n\n  - JRuby new works with HTTPS gem sources (@davidcelis)\n  - `install` installs both rake rake-built gems at once (@crowbot, #2107)\n  - handle Errno::ETIMEDOUT errors (@jmoses)\n  - handle Errno::EAGAIN errors on JRuby\n  - disable ANSI coloring when output is redirected (@tomykaira)\n  - raise LoadErrors correctly during Bundler.require (@Empact)\n  - do not swallow --verbose on `bundle exec` (@sol, #2102)\n  - `gem` generates gemspecs that block double-requires\n  - `gem` generates gemspecs that admit they depend on rake\n\n## 1.2.5 (Feb 24, 2013)\n\nBugfixes:\n\n  - install Gemfiles with HTTP sources even without OpenSSL present\n  - display CerficateFailureError message in full\n\n## 1.2.4 (Feb 12, 2013)\n\nFeatures:\n\n  - warn about Ruby 2.0 and Rubygems 2.0\n  - inform users when the resolver starts\n  - disable reverse DNS to speed up API requests (@raggi)\n\nBugfixes:\n\n  - don\'t send user/pass when redirected to another host (@perplexes)\n  - load gemspecs containing unicode (@gaffneyc, #2301)\n  - support any ruby version in --standalone\n  - resolve some ruby -w warnings (@chastell, #2193)\n  - don\'t scare users with an error message during API fallback\n\n## 1.2.3 (Nov 29, 2012)\n\nBugfixes:\n\n  - fix exceptions while loading some gemspecs\n\n## 1.2.2 (Nov 14, 2012)\n\nBugfixes:\n\n  - support new Psych::SyntaxError for Ruby 2.0.0 (@tenderlove, @sol)\n  - `bundle viz` works with git gems again (@hirochachacha)\n  - recognize more cases when OpenSSL is not present\n\n## 1.2.1 (Sep 19, 2012)\n\nBugfixes:\n\n  - `bundle clean` now works with BUNDLE_WITHOUT groups again\n  - have a net/http read timeout around the Gemcutter API Endpoint\n\n## 1.2.0 (Aug 30, 2012)\n\nBugfixes:\n\n  - raise original error message from LoadError\'s\n\nDocumentation:\n\n  - `platform` man pages\n\n## 1.2.0.rc.2 (Aug 8, 2012)\n\nBugfixes:\n\n  - `clean` doesn\'t remove gems that are included in the lockfile\n\n## 1.2.0.rc (Jul 17, 2012)\n\nFeatures:\n\n  - `check` now has a `--dry-run` option (@svenfuchs, #1811)\n  - loosen ruby directive for engines\n  - prune git/path directories inside vendor/cache (@josevalim, #1988)\n  - update vendored thor to 0.15.2 (@sferik)\n  - add .txt to LICENSE (@postmodern, #2001)\n  - add `config disable_local_branch_check` (@josevalim, #1985)\n  - fall back on the full index when experiencing syck errors (#1419)\n  - handle syntax errors in Ruby gemspecs (#1974)\n\nBugfixes:\n\n  - fix `pack`/`cache` with `--all` (@josevalim, #1989)\n  - don\'t display warning message when `cache_all` is set\n  - check for `nil` PATH (#2006)\n  - Always try to keep original GEM_PATH (@drogus, #1920)\n\n## 1.2.0.pre.1 (May 27, 2012)\n\nFeatures:\n\n  - Git gems import submodules of submodules recursively (@nwwatson, #1935)\n\nBugfixes:\n\n  - Exit from `check` with a non-zero status when frozen with no lock\n  - Use `latest_release` in Capistrano and Vlad integration (#1264)\n  - Work around a Ruby 1.9.3p194 bug in Psych when config files are empty\n\nDocumentation:\n\n  - Add instructions for local git repos to the `config` manpage\n  - Update the `Gemfile` manpage to include ruby versions (@stevenh512)\n  - When OpenSSL is missing, provide instructions for fixing (#1776 etc.)\n  - Unknown exceptions now link to ISSUES for help instead of a new ticket\n  - Correct inline help for `clean --force` (@dougbarth, #1911)\n\n## 1.2.0.pre (May 4, 2012)\n\nFeatures:\n\n  - bundle package now accepts --all to package git and path dependencies\n  - bundle config now accepts --local, --global and --delete options\n  - It is possible to override a git repository via configuration.\n    For instance, if you have a git dependency on rack, you can force\n    it to use a local repo with `bundle config local.rack ~/path/to/rack`\n  - Cache gemspec loads for performance (@dekellum, #1635)\n  - add --full-index flag to `bundle update` (@fluxx, #1829)\n  - add --quiet flag to `bundle update` (@nashby, #1654)\n  - Add Bundler::GemHelper.gemspec (@knu, #1637)\n  - Graceful handling of Gemfile syntax errors (@koraktor, #1661)\n  - `bundle platform` command\n  - add ruby to DSL, to specify version of ruby\n  - error out if the ruby version doesn\'t match\n\nPerformance:\n\n  - bundle exec shouldn\'t run Bundler.setup just setting the right rubyopts options is enough (@spastorino, #1598)\n\nBugfixes:\n\n  - Avoid passing RUBYOPT changes in with_clean_env block (@eric1234, #1604)\n  - Use the same ruby to run subprocesses as is running rake (@brixen)\n\nDocumentation:\n\n  - Add :github documentation in DSL (@zofrex, #1848, #1851, #1852)\n  - Add docs for the --no-cache option (@fluxx, #1796)\n  - Add basic documentation for bin_path and bundle_path (@radar)\n  - Add documentation for the run method in Bundler::Installer\n\n## 1.1.5 (Jul 17, 2012)\n\nFeatures:\n\n  - Special case `ruby` directive from 1.2.0, so you can install Gemfiles that use it\n\n## 1.1.4 (May 27, 2012)\n\nBugfixes:\n\n  - Use `latest_release` in Capistrano and Vlad integration (#1264)\n  - Unknown exceptions now link to ISSUES for help instead of a new ticket\n  - When OpenSSL is missing, provide instructions for fixing (#1776 etc.)\n  - Correct inline help for `clean --force` (@dougbarth, #1911)\n  - Work around a Ruby 1.9.3p194 bug in Psych when config files are empty\n\n## 1.1.3 (March 23, 2012)\n\nBugfixes:\n\n  - escape the bundler root path (@tenderlove, #1789)\n\n## 1.1.2 (March 20, 2012)\n\nBugfixes:\n\n  - Fix --deployment for multiple PATH sections of the same source (#1782)\n\n## 1.1.1 (March 14, 2012)\n\nBugfixes:\n\n  - Rescue EAGAIN so the fetcher works on JRuby on Windows\n  - Stop asking users to report gem installation errors\n  - Clarify \"no sources\" message\n  - Use $\\ so `bundle gem` gemspecs work on Windows (@postmodern)\n  - URI-encode gem names for dependency API (@rohit, #1672)\n  - Fix `cache` edge case in rubygems 1.3.7 (#1202)\n\nPerformance:\n\n  - Reduce invocation of git ls-files in `bundle gem` gemspecs (@knu)\n\n## 1.1.0 (Mar 7, 2012)\n\nBugfixes:\n\n  - Clean up corrupted lockfiles on bundle installs\n  - Prevent duplicate GIT sources\n  - Fix post_install_message when uing the endpoint API\n\n## 1.1.rc.8 (Mar 3, 2012)\n\nPerformance:\n\n  - don\'t resolve if the Gemfile.lock and Gemfile haven\'t changed\n\nBugfixes:\n\n  - Load gemspecs from git even when a released gem has the same version (#1609)\n  - Declare an accurate Ruby version requirement of 1.8.7 or newer (#1619)\n  - handle gemspec development dependencies correctly (@raggi, #1639)\n  - Avoid passing RUBYOPT changes in with_clean_env block. (eric1234, #1604)\n\n## 1.1.rc.7 (Dec 29, 2011)\n\nBugfixes:\n\n  - Fix bug where `clean` would break when using :path with no gemspec\n\n## 1.1.rc.6 (Dec 22, 2011)\n\nBugfixes:\n\n  - Fix performance regression from 1.0 (@spastorino, #1511, #1591, #1592)\n  - Load gems correctly when GEM_HOME is blank\n  - Refresh gems so Bundler works from inside a bundle\n  - Handle empty .bundle/config files without an error\n\n## 1.1.rc.5 (Dec 14, 2011)\n\nBugfixes:\n\n  - Fix ASCII encoding errors with gem (rerelease with ruby 1.8)\n\n## 1.1.rc.4 (Dec 14, 2011)\n\nFeatures:\n\n  - `bundle viz` has the option to output a DOT file instead of a PNG (@hirochachacha, #683)\n\nBugfixes:\n\n  - Ensure binstubs generated when using --standalone point to the standalonde bundle (@cowboyd, #1588)\n  - fix `bundle viz` (@hirochachacha, #1586)\n\n## 1.1.rc.3 (Dec 8, 2011)\n\nBugfixes:\n\n  - fix relative_path so it checks Bundler.root is actually in the beginning of the path (#1582)\n  - fix bundle outdated doesn\'t list all gems (@joelmoss, #1521)\n\n## 1.1.rc.2 (Dec 6, 2011)\n\nFeatures:\n\n  - Added README.md to `newgem` (@ognevsky, #1574)\n  - Added LICENSE (MIT) to newgem (@ognevsky, #1571)\n\nBugfixes:\n\n  - only auto-namespace requires for implied requires (#1531)\n  - fix bundle clean output for git repos (#1473)\n  - use Gem.bindir for bundle clean (#1544, #1532)\n  - use `Gem.load_env_plugins` instead of `Gem.load_env_plugins` (#1500, #1543)\n  - differentiate Ruby 2.0 (trunk) from Ruby 1.9 (@tenderlove, #1539)\n  - `bundle clean` handles 7 length git hash for bundle clean (#1490, #1491)\n  - fix Psych loading issues\n  - Search $PATH for a binary rather than shelling out to `which` (@tenderlove, #1573)\n  - do not clear RG cache unless we actually modify GEM_PATH and GEM_HOME- use `Gem.load_env_plugins` instead of `Gem.load_env_plugins` (#1500, #1543)\n  - `newgem` now uses https://rubygems.org (#1562)\n  - `bundle init` now uses https://rubygems.org (@jjb, #1522)\n  - `bundle install/update` does not autoclean when using --path for semver\n\nDocumentation:\n\n  - added documentation for --shebang option for `bundle install` (@lunks, #1475, #1558)\n\n## 1.1.rc (Oct 3, 2011)\n\nFeatures:\n\n  - add `--shebang` option to bundle install (@bensie, #1467)\n  - build passes on ruby 1.9.3rc1 (#1458, #1469)\n  - hide basic auth credentials for custom sources (#1440, #1463)\n\nBugfixes:\n\n  - fix index search result caching (#1446, #1466)\n  - fix fetcher prints multiple times during install (#1445, #1462)\n  - don\'t mention API errors from non-rubygems.org sources\n  - fix autoclean so it doesn\'t remove bins that are used (#1459, #1460)\n\nDocumentation:\n\n  - add :require => [...] to the gemfile(5) manpage (@nono, #1468)\n\n## 1.1.pre.10 (Sep 27, 2011)\n\nFeatures:\n\n  - `config system_bindir foo` added, works like \"-n foo\" in your .gemrc file\n\n## 1.1.pre.9 (Sep 18, 2011)\n\nFeatures:\n\n  - `clean` will now clean up all old .gem and .gemspec files, cleaning up older pres\n  - `clean` will be automatically run after bundle install and update when using `--path` (#1420, #1425)\n  - `clean` now takes a `--force` option (#1247, #1426)\n  - `clean` will clean up cached git dirs in bundle clean (#1390)\n  - remove deprecations from DSL (#1119)\n  - autorequire tries directories for gems with dashed names (#1205)\n  - adds a `--paths` flag to `bundle show` to list all the paths of bundled gems (@tiegz, #1360)\n  - load rubygems plugins in the bundle binary (@tpope, #1364)\n  - make `--standalone` respect `--path` (@cowboyd, #1361)\n\nBugfixes:\n\n  - Fix `clean` to handle nested gems in a git repo (#1329)\n  - Fix conflict from revert of benchmark tool (@boffbowsh, #1355)\n  - Fix fatal error when unable to connect to gem source (#1269)\n  - Fix `outdated` to find pre-release gems that are installed. (#1359)\n  - Fix color for ui. (#1374)\n  - Fix installing to user-owned system gems on OS X\n  - Fix caching issue in the resolver (#1353, #1421)\n  - Fix :github DSL option\n\n## 1.1.pre.8 (Aug 13, 2011)\n\nBugfixes:\n\n  - Fix `bundle check` to not print fatal error message (@cldwalker, #1347)\n  - Fix require_sudo when Gem.bindir isn\'t writeable (#1352)\n  - Fix not asking Gemcutter API for dependency chain of git gems in --deployment (#1254)\n  - Fix `install --binstubs` when using --path (#1332)\n\n## 1.1.pre.7 (Aug 8, 2011)\n\nBugfixes:\n\n  - Fixed invalid byte sequence error while installing gem on Ruby 1.9 (#1341)\n  - Fixed exception when sudo was needed to install gems (@spastorino)\n\n## 1.1.pre.6 (Aug 8, 2011)\n\nBugfixes:\n\n  - Fix cross repository dependencies (#1138)\n  - Fix git dependency fetching from API endpoint (#1254)\n  - Fixes for bundle outdated (@joelmoss, #1238)\n  - Fix bundle standalone when using the endpoint (#1240)\n\nFeatures:\n\n  - Implement `to_ary` to avoid calls to method_missing (@tenderlove, #1274)\n  - bundle clean removes old .gem files (@cldwalker, #1293)\n  - Correcly identify missing child dependency in error message\n  - Run pre-install, post-build, and post-install gem hooks for git gems (@warhammerkid, #1120)\n  - create Gemfile.lock for empty Gemfile (#1218)\n\n## 1.1.pre.5 (June 11, 2011)\n\nBugfixes:\n\n  - Fix LazySpecification on Ruby 1.9 (@dpiddy, #1232)\n  - Fix HTTP proxy support (@leobessa, #878)\n\nFeatures:\n\n  - Speed up `install --deployment` by using the API endpoint\n  - Support Basic HTTP Auth for the API endpoint (@dpiddy, #1229)\n  - Add `install --full-index` to disable the API endpoint, just in case\n  - Significantly speed up install by removing unneeded gemspec fetches\n  - `outdated` command shows outdated gems (@joelmoss, #1130)\n  - Print gem post install messages (@csquared, #1155)\n  - Reduce memory use by removing Specification.new inside method_missing (@tenderlove, #1222)\n  - Allow `check --path`\n\n## 1.1.pre.4 (May 5, 2011)\n\nBugfixes:\n\n  - Fix bug that could prevent installing new gems\n\n## 1.1.pre.3 (May 4, 2011)\n\nFeatures:\n\n  - Add `bundle outdated` to show outdated gems (@joelmoss)\n  - Remove BUNDLE_* from `Bundler.with_clean_env` (@wuputah)\n  - Add Bundler.clean_system, and clean_exec (@wuputah)\n  - Use git config for gem author name and email (@krekoten)\n\nBugfixes:\n\n  - Fix error calling Bundler.rubygems.gem_path\n  - Fix error when Gem.path returns Gem::FS instead of String\n\n## 1.1.pre.2 (April 28, 2011)\n\nFeatures:\n\n  - Add :github option to Gemfile DSL for easy git repos\n  - Merge all fixes from 1.0.12 and 1.0.13\n\n## 1.1.pre.1 (February 2, 2011)\n\nBugfixes:\n\n  - Compatibility with changes made by Rubygems 1.5\n\n## 1.1.pre (January 21, 2011)\n\nFeatures:\n\n  - Add bundle clean. Removes unused gems from --path directory\n  - Initial Gemcutter Endpoint API work, BAI Fetching source index\n  - Added bundle install --standalone\n  - Ignore Gemfile.lock when buliding new gems\n  - Make it possible to override a .gemspec dependency\'s source in the\n    Gemfile\n\nRemoved:\n\n  - Removed bundle lock\n  - Removed bundle install <path>\n  - Removed bundle install --production\n  - Removed bundle install --disable-shared-gems\n\n## 1.0.21 (September 30, 2011)\n\n  - No changes from RC\n\n## 1.0.21.rc (September 29, 2011)\n\nBugfixes:\n\n  - Load Psych unless Syck is defined, because 1.9.2 defines YAML\n\n## 1.0.20 (September 27, 2011)\n\nFeatures:\n\n  - Add platform :maglev (@timfel, #1444)\n\nBugfixes:\n\n  - Ensure YAML is required even if Psych is found\n  - Handle directory names that contain invalid regex characters\n\n## 1.0.20.rc (September 18, 2011)\n\nFeatures:\n\n  - Rescue interrupts to `bundle` while loading bundler.rb (#1395)\n  - Allow clearing without groups by passing `--without \'\'` (#1259)\n\nBugfixes:\n\n  - Manually sort requirements in the lockfile (#1375)\n  - Remove several warnings generated by ruby -w (@stephencelis)\n  - Handle trailing slashes on names passed to `gem` (#1372)\n  - Name modules for gems like \'test-foo_bar\' correctly (#1303)\n  - Don\'t require Psych if Syck is already loaded (#1239)\n\n## 1.0.19.rc (September 13, 2011)\n\nFeatures:\n\n  - Compatability with Rubygems 1.8.10 installer changes\n  - Report gem installation failures clearly (@rwilcox, #1380)\n  - Useful error for cap and vlad on first deploy (@nexmat, @kirs)\n\nBugfixes:\n\n  - `exec` now works when the command contains \'exec\'\n  - Only touch lock after changes on Windows (@robertwahler, #1358)\n  - Keep load paths when #setup is called multiple times (@radsaq, #1379)\n\n## 1.0.18 (August 16, 2011)\n\nBugfixes:\n\n  - Fix typo in DEBUG_RESOLVER (@geemus)\n  - Fixes rake 0.9.x warning (@mtylty, #1333)\n  - Fix `bundle cache` again for rubygems 1.3.x\n\nFeatures:\n\n  - Run the bundle install earlier in a Capistrano deployment (@cgriego, #1300)\n  - Support hidden gemspec (@trans, @cldwalker, #827)\n  - Make fetch_specs faster (@zeha, #1294)\n  - Allow overriding development deps loaded by #gemspec (@lgierth, #1245)\n\n## 1.0.17 (August 8, 2011)\n\nBugfixes:\n\n  - Fix rake issues with rubygems 1.3.x (#1342)\n  - Fixed invalid byte sequence error while installing gem on Ruby 1.9 (#1341)\n\n## 1.0.16 (August 8, 2011)\n\nFeatures:\n\n  - Performance fix for MRI 1.9 (@efficientcloud, #1288)\n  - Shortcuts (like `bundle i`) for all commands (@amatsuda)\n  - Correcly identify missing child dependency in error message\n\nBugfixes:\n\n  - Allow Windows network share paths with forward slashes (@mtscout6, #1253)\n  - Check for rubygems.org credentials so `rake release` doesn\'t hang (#980)\n  - Find cached prerelease gems on rubygems 1.3.x (@dburt, #1202)\n  - Fix `bundle install --without` on kiji (@tmm1, #1287)\n  - Get rid of warning in ruby 1.9.3 (@smartinez87, #1231)\n\nDocumentation:\n\n  - Documentation for `gem ..., :require => false` (@kmayer, #1292)\n  - Gems provide \"executables\", they are rarely also binaries (@fxn, #1242)\n\n## 1.0.15 (June 9, 2011)\n\nFeatures:\n\n  - Improved Rubygems integration, removed many deprecation notices\n\nBugfixes:\n\n  - Escape URL arguments to git correctly on Windows (1.0.14 regression)\n\n## 1.0.14 (May 27, 2011)\n\nFeatures:\n\n  - Rubinius platform :rbx (@rkbodenner)\n  - Include gem rake tasks with \"require \'bundler/gem_tasks\" (@indirect)\n  - Include user name and email from git config in new gemspec (@ognevsky)\n\nBugfixes:\n\n  - Set file permissions after checking out git repos (@tissak)\n  - Remove deprecated call to Gem::SourceIndex#all_gems (@mpj)\n  - Require the version file in new gemspecs (@rubiii)\n  - Allow relative paths from the Gemfile in gems with no gemspec (@mbirk)\n  - Install gems that contain \'bundler\', e.g. guard-bundler (@hone)\n  - Display installed path correctly on Windows (@tadman)\n  - Escape quotes in git URIs (@mheffner)\n  - Improve Rake 0.9 support (@quix)\n  - Handle certain directories already existing (@raggi)\n  - Escape filenames containing regex characters (@indirect)\n\n## 1.0.13 (May 4, 2011)\n\nFeatures:\n\n  - Compatibility with Rubygems master (soon to be v1.8) (@evanphx)\n  - Informative error when --path points to a broken symlink\n  - Support Rake 0.9 and greater (@e2)\n  - Output full errors for non-TTYs e.g. pow (@josh)\n\nBugfixes:\n\n  - Allow spaces in gem path names for gem tasks (@rslifka)\n  - Have cap run bundle install from release_path (@martinjagusch)\n  - Quote git refspec so zsh doesn\'t expand it (@goneflyin)\n\n## 1.0.12 (April 8, 2011)\n\nFeatures:\n\n  - Add --no-deployment option to `install` for disabling it on dev machines\n  - Better error message when git fails and cache is present (@parndt)\n  - Honor :bundle_cmd in cap `rake` command (@voidlock, @cgriego)\n\nBugfixes:\n\n  - Compatibility with Rubygems 1.7 and Rails 2.3 and vendored gems (@evanphx)\n  - Fix changing gem order in lock (@gucki)\n  - Remove color escape sequences when displaying man pages (@bgreenlee)\n  - Fix creating GEM_HOME on both JRuby 1.5 and 1.6 (@nickseiger)\n  - Fix gems without a gemspec and directories in bin/ (@epall)\n  - Fix --no-prune option for `bundle install` (@cmeiklejohn)\n\n## 1.0.11 (April 1, 2011)\n\nFeatures:\n\n  - Compatibility with Rubygems 1.6 and 1.7\n  - Better error messages when a git command fails\n\nBugfixes:\n\n  - Don\'t always update gemspec gems (@carllerche)\n  - Remove ivar warnings (@jackdempsey)\n  - Fix occasional git failures in zsh (@jonah-carbonfive)\n  - Consistent lock for gems with double deps like Cap (@akahn)\n\n## 1.0.10 (February 1, 2011)\n\nBugfixes:\n\n  - Fix a regression loading YAML gemspecs from :git and :path gems\n  - Requires, namespaces, etc. to work with changes in Rubygems 1.5\n\n## 1.0.9 (January 19, 2011)\n\nBugfixes:\n\n  - Fix a bug where Bundler.require could remove gems from the load\n    path. In Rails apps with a default application.rb, this removed\n    all gems in groups other than :default and Rails.env\n\n## 1.0.8 (January 18, 2011)\n\nFeatures:\n\n  - Allow overriding gemspec() deps with :git deps\n  - Add --local option to `bundle update`\n  - Ignore Gemfile.lock in newly generated gems\n  - Use `less` as help pager instead of `more`\n  - Run `bundle exec rake` instead of `rake` in Capistrano tasks\n\nBugfixes:\n\n  - Fix --no-cache option for `bundle install`\n  - Allow Vlad deploys to work without Capistrano gem installed\n  - Fix group arguments to `bundle console`\n  - Allow groups to be loaded even if other groups were loaded\n  - Evaluate gemspec() gemspecs in their directory not the cwd\n  - Count on Rake to chdir to the right place in GemHelper\n  - Change Pathnames to Strings for MacRuby\n  - Check git process exit status correctly\n  - Fix some warnings in 1.9.3-trunk (thanks tenderlove)\n\n## 1.0.7 (November 17, 2010)\n\nBugfixes:\n\n  - Remove Bundler version from the lockfile because it broke\n    backwards compatibility with 1.0.0-1.0.5. Sorry. :(\n\n## 1.0.6 (November 16, 2010)\n\nBugfixes:\n\n  - Fix regression in `update` that caused long/wrong results\n  - Allow git gems on other platforms while installing (#579)\n\nFeatures:\n\n  - Speed up `install` command using various optimizations\n  - Significantly increase performance of resolver\n  - Use upcoming Rubygems performance improvements (@tmm1)\n  - Warn if the lockfile was generated by a newer version\n  - Set generated gems\' homepage to \"\", so Rubygems will warn\n\n## 1.0.5 (November 13, 2010)\n\nBugfixes:\n\n  - Fix regression disabling all operations that employ sudo\n\n## 1.0.4 (November 12, 2010)\n\nBugfixes:\n\n  - Expand relative :paths from Bundler.root (eg ./foogem)\n  - Allow git gems in --without groups while --frozen\n  - Allow gem :ref to be a symbol as well as a string\n  - Fix exception when Gemfile needs a newer Bundler version\n  - Explanation when the current Bundler version conflicts\n  - Explicit error message if Gemfile needs newer Bundler\n  - Ignore an empty string BUNDLE_GEMFILE\n  - Skeleton gemspec now works with older versions of git\n  - Fix shell quoting and ref fetching in GemHelper\n  - Disable colored output in --deployment\n  - Preserve line endings in lock file\n\nFeatures:\n\n  - Add support for \'mingw32\' platform (aka RubyInstaller)\n  - Large speed increase when Gemfile.lock is already present\n  - Huge speed increase when many (100+) system gems are present\n  - Significant expansion of ISSUES, man pages, and docs site\n  - Remove Open3 from GemHelper (now it works on Windows™®©)\n  - Allow setting roles in built-in cap and vlad tasks\n\n## 1.0.3 (October 15, 2010)\n\nBugfixes:\n\n  - Use bitwise or in #hash to reduce the chance of overflow\n  - `bundle update` now works with :git + :tag updates\n  - Record relative :path options in the Gemfile.lock\n  - :groups option on gem method in Gemfile now works\n  - Add #platform method and :platform option to Gemfile DSL\n  - --without now accepts a quoted, space-separated list\n  - Installing after --deployment with no lock is now possible\n  - Binstubs can now be symlinked\n  - Print warning if cache for --local install is missing gems\n  - Improve output when installing to a path\n  - The tests all pass! Yay!\n\n## 1.0.2 (October 2, 2010)\n\nBugfix:\n\n  - Actually include the man pages in the gem, so help works\n\n## 1.0.1 (October 1, 2010)\n\nFeatures:\n\n  - Vlad deployment recipe, `require \'bundler/vlad\'`\n  - Prettier bundle graphs\n  - Improved gem skeleton for `bundle gem`\n  - Prompt on file clashes when generating a gem\n  - Option to generate binary with gem skeleton\n  - Allow subclassing of GemHelper for custom tasks\n  - Chdir to gem directory during `bundle open`\n\nBugfixes:\n\n  - Allow gemspec requirements with a list of versions\n  - Accept lockfiles with windows line endings\n  - Respect BUNDLE_WITHOUT env var\n  - Allow `gem \"foo\", :platform => :jruby`\n  - Specify loaded_from path in fake gemspec\n  - Flesh out gem_helper tasks, raise errors correctly\n  - Respect RBConfig::CONFIG[\'ruby_install_name\'] in binstubs\n\n## 1.0.0 (August 29, 2010)\n\nFeatures:\n\n  - You can now define `:bundle_cmd` in the capistrano task\n\nBugfixes:\n\n  - Various bugfixes to the built-in rake helpers\n  - Fix a bug where shortrefs weren\'t unique enough and were\n    therfore colliding\n  - Fix a small bug involving checking whether a local git\n    clone is up to date\n  - Correctly handle explicit \'=\' dependencies with gems\n    pinned to a git source\n  - Fix an issue with Windows-generated lockfiles by reading\n    and writing the lockfile in binary mode\n  - Fix an issue with shelling out to git in Windows by\n    using double quotes around paths\n  - Detect new Rubygems sources in the Gemfile and update\n    the lockfile\n\n## 1.0.0.rc.6 (August 23, 2010)\n\nFeatures:\n\n  - Much better documentation for most of the commands and Gemfile\n    format\n\nBugfixes:\n\n  - Don\'t attempt to create directories if they already exist\n  - Fix the capistrano task so that it actually runs\n  - Update the Gemfile template to reference rubygems.org instead\n    of :gemcutter\n  - bundle exec should exit with a non zero exit code when the gem\n    binary does not exist or the file is not executable.\n  - Expand paths in Gemfile relative to the Gemfile and not the current\n    working directory.\n\n## 1.0.0.rc.5 (August 10, 2010)\n\nFeatures:\n\n  - Make the Capistrano task more concise.\n\nBugfixes:\n\n  - Fix a regression with determining whether or not to use sudo\n  - Allow using the --gemfile flag with the --deployment flag\n\n## 1.0.0.rc.4 (August 9, 2010)\n\nFeatures:\n\n  - `bundle gem NAME` command to generate a new gem with Gemfile\n  - Bundle config file location can be specified by BUNDLE_APP_CONFIG\n  - Add --frozen to disable updating the Gemfile.lock at runtime\n    (default with --deployment)\n  - Basic Capistrano task now added as \'bundler/capistrano\'\n\nBugfixes:\n\n  - Multiple bundler process no longer share a tmp directory\n  - `bundle update GEM` always updates dependencies of GEM as well\n  - Deleting the cache directory no longer causes errors\n  - Moving the bundle after installation no longer causes git errors\n  - Bundle path is now correctly remembered on a read-only filesystem\n  - Gem binaries are installed to Gem.bindir, not #{Gem.dir}/bin\n  - Fetch gems from vendor/cache, even without --local\n  - Sort lockfile by platform as well as spec\n\n## 1.0.0.rc.3 (August 3, 2010)\n\nFeatures:\n\n  - Deprecate --production flag for --deployment, since the former\n    was causing confusion with the :production group\n  - Add --gemfile option to `bundle check`\n  - Reduce memory usage of `bundle install` by 2-4x\n  - Improve message from `bundle check` under various conditions\n  - Better error when a changed Gemfile conflicts with Gemfile.lock\n\nBugfixes:\n\n  - Create bin/ directory if it is missing, then install binstubs\n  - Error nicely on the edge case of a pinned gem with no spec\n  - Do not require gems for other platforms\n  - Update git sources along with the gems they contain\n\n## 1.0.0.rc.2 (July 29, 2010)\n\n  - `bundle install path` was causing confusion, so we now print\n    a clarifying warning. The preferred way to install to a path\n    (which will not print the warning) is\n    `bundle install --path path/to/install`.\n  - `bundle install --system` installs to the default system\n    location ($BUNDLE_PATH or $GEM_HOME) even if you previously\n    used `bundle install --path`\n  - completely remove `--disable-shared-gems`. If you install to\n    system, you will not be isolated, while if you install to\n    another path, you will be isolated from gems installed to\n    the system. This was mostly an internal option whose naming\n    and semantics were extremely confusing.\n  - Add a `--production` option to `bundle install`:\n    - by default, installs to `vendor/bundle`. This can be\n      overridden with the `--path` option\n    - uses `--local` if `vendor/cache` is found. This will\n      guarantee that Bundler does not attempt to connect to\n      Rubygems and will use the gems cached in `vendor/cache`\n      instead\n    - Raises an exception if a Gemfile.lock is not found\n    - Raises an exception if you modify your Gemfile in development\n      but do not check in an updated Gemfile.lock\n  - Fixes a bug where switching a source from Rubygems to git\n    would always say \"the git source is not checked out\" when\n    running `bundle install`\n\nNOTE: We received several reports of \"the git source has not\nbeen checked out. Please run bundle install\". As far as we\ncan tell, these problems have two possible causes:\n\n1. `bundle install ~/.bundle` in one user, but actually running\n   the application as another user. Never install gems to a\n   directory scoped to a user (`~` or `$HOME`) in deployment.\n2. A bug that happened when changing a gem to a git source.\n\nTo mitigate several common causes of `(1)`, please use the\nnew `--production` flag. This flag is simply a roll-up of\nthe best practices we have been encouraging people to use\nfor deployment.\n\nIf you want to share gems across deployments, and you use\nCapistrano, symlink release_path/current/vendor/bundle to\nrelease_path/shared/bundle. This will keep deployments\nsnappy while maintaining the benefits of clean, deploy-time\nisolation.\n\n## 1.0.0.rc.1 (July 26, 2010)\n\n  - Fixed a bug with `bundle install` on multiple machines and git\n\n## 1.0.0.beta.10 (July 25, 2010)\n\n  - Last release before 1.0.0.rc.1\n  - Added :mri as a valid platform (platforms :mri { gem \"ruby-debug\" })\n  - Fix `bundle install` immediately after modifying the :submodule option\n  - Don\'t write to Gemfile.lock if nothing has changed, fixing situations\n    where bundle install was run with a different user than the app\n    itself\n  - Fix a bug where other platforms were being wiped on `bundle update`\n  - Don\'t ask for root password on `bundle install` if not needed\n  - Avoid setting `$GEM_HOME` where not needed\n  - First solid pass of `bundle config`\n  - Add build options\n    - `bundle config build.mysql --with-mysql-config=/path/to/config`\n\n## 1.0.0.beta.9 (July 21, 2010)\n\n  - Fix install failure when switching from a path to git source\n  - Fix `bundle exec bundle *` in a bundle with --disable-shared-gems\n  - Fix `bundle *` from inside a bundle with --disable-shared-gem\n  - Shim Gem.refresh. This is used by Unicorn\n  - Fix install failure when a path\'s dependencies changed\n\n## 1.0.0.beta.8 (July 20, 2010)\n\n  - Fix a Beta 7 bug involving Ruby 1.9\n\n## 1.0.0.beta.7 (July 20, 2010, yanked)\n\n  - Running `bundle install` twice in a row with a git source always crashed\n\n## 1.0.0.beta.6 (July 20, 2010, yanked)\n\n  - Create executables with bundle install --binstubs\n  - You can customize the location (default is app/bin) with --binstubs other/location\n  - Fix a bug where the Gemfile.lock would be deleted even if the update was exited\n  - Fix a bug where cached gems for other platforms were sometimes deleted\n  - Clean up output when nothing was deleted from cache (it previously said\n    \"Removing outdated gems ...\")\n  - Improve performance of bundle install if the git gem was already checked out,\n    and the revision being used already exists locally\n  - Fix bundle show bundler in some cases\n  - Fix bugs with bundle update\n  - Don\'t ever run git commands at runtime (fixes a number of common passenger issues)\n  - Fixes an obscure bug where switching the source of a gem could fail to correctly\n    change the source of its dependencies\n  - Support multiple version dependencies in the Gemfile\n    (gem \"rails\", \">= 3.0.0.beta1\", \"<= 3.0.0\")\n  - Raise an exception for ambiguous uses of multiple declarations of the same gem\n    (for instance, with different versions or sources).\n  - Fix cases where the same dependency appeared several times in the Gemfile.lock\n  - Fix a bug where require errors were being swallowed during Bundler.require\n\n## 1.0.0.beta.1\n\n  - No `bundle lock` command. Locking happens automatically on install or update\n  - No .bundle/environment.rb. Require \'bundler/setup\' instead.\n  - $BUNDLE_HOME defaults to $GEM_HOME instead of ~/.bundle\n  - Remove lockfiles generated by 0.9\n\n## 0.9.26\n\nFeatures:\n\n  - error nicely on incompatible 0.10 lockfiles\n\n## 0.9.25 (May 3, 2010)\n\nBugfixes:\n\n  - explicitly coerce Pathname objects to Strings for Ruby 1.9\n  - fix some newline weirdness in output from install command\n\n## 0.9.24 (April 22, 2010)\n\nFeatures:\n\n  - fetch submodules for git sources\n  - limit the bundled version of bundler to the same as the one installing\n  - force relative paths in git gemspecs to avoid raising Gem::NameTooLong\n  - serialize GemCache sources correctly, so locking works\n  - raise Bundler::GemNotFound instead of calling exit! inside library code\n  - Rubygems 1.3.5 compatibility for the adventurous, not supported by me :)\n\nBugfixes:\n\n  - don\'t try to regenerate environment.rb if it is read-only\n  - prune outdated gems with the platform \"ruby\"\n  - prune cache without errors when there are directories or non-gem files\n  - don\'t re-write environment.rb if running after it has been loaded\n  - do not monkeypatch Specification#load_paths twice when inside a bundle\n\n## 0.9.23 (April 20, 2010)\n\nBugfixes:\n\n  - cache command no longer prunes gems created by an older rubygems version\n  - cache command no longer prunes gems that are for other platforms\n\n## 0.9.22 (April 20, 2010)\n\nFeatures:\n\n  - cache command now prunes stale .gem files from vendor/cache\n  - init --gemspec command now generates development dependencies\n  - handle Polyglot\'s changes to Kernel#require with Bundler::ENV_LOADED (#287)\n  - remove .gem files generated after installing a gem from a :path (#286)\n  - improve install/lock messaging (#284)\n\nBugfixes:\n\n  - ignore cached gems that are for another platform (#288)\n  - install Windows gems that have no architecture set, like rcov (#277)\n  - exec command while locked now includes the bundler lib in $LOAD_PATH (#293)\n  - fix the `rake install` task\n  - add GemspecError so it can be raised without (further) error (#292)\n  - create a parent directory before cloning for git 1.5 compatibility (#285)\n\n## 0.9.21 (April 16, 2010)\n\nBugfixes:\n\n  - don\'t raise \'omg wtf\' when lockfile is outdated\n\n## 0.9.20 (April 15, 2010)\n\nFeatures:\n\n  - load YAML format gemspecs\n  - no backtraces when calling Bundler.setup if gems are missing\n  - no backtraces when trying to exec a file without the executable bit\n\nBugfixes:\n\n  - fix infinite recursion in Bundler.setup after loading a bundled Bundler gem\n  - request install instead of lock when env.rb is out of sync with Gemfile.lock\n\n## 0.9.19 (April 12, 2010)\n\nFeatures:\n\n  - suggest `bundle install --relock` when the Gemfile has changed (#272)\n  - source support for Rubygems servers without prerelease gem indexes (#262)\n\nBugfixes:\n\n  - don\'t set up all groups every time Bundler.setup is called while locked (#263)\n  - fix #full_gem_path for git gems while locked (#268)\n  - eval gemspecs at the top level, not inside the Bundler class (#269)\n\n\n## 0.9.18 (April 8, 2010)\n\nFeatures:\n\n  - console command that runs irb with bundle (and optional group) already loaded\n\nBugfixes:\n\n  - Bundler.setup now fully disables system gems, even when unlocked (#266, #246)\n    - fixes Yard, which found plugins in Gem.source_index that it could not load\n    - makes behaviour of `Bundler.require` consistent between locked and unlocked loads\n\n## 0.9.17 (April 7, 2010)\n\nFeatures:\n\n  - Bundler.require now calls Bundler.setup automatically\n  - Gem::Specification#add_bundler_dependencies added for gemspecs\n\nBugfixes:\n\n  - Gem paths are not longer duplicated while loading bundler\n  - exec no longer duplicates RUBYOPT if it is already set correctly\n\n## 0.9.16 (April 3, 2010)\n\nFeatures:\n\n  - exit gracefully on INT signal\n  - resolver output now indicates whether remote sources were checked\n  - print error instead of backtrace when exec cannot find a binary (#241)\n\nBugfixes:\n\n  - show, check, and open commands work again while locked (oops)\n  - show command for git gems\n    - outputs branch names other than master\n    - gets the correct sha from the checkout\n    - doesn\'t print sha twice if :ref is set\n  - report errors from bundler/setup.rb without backtraces (#243)\n  - fix Gem::Spec#git_version to not error on unloaded specs\n  - improve deprecation, Gemfile, and command error messages (#242)\n\n## 0.9.15 (April 1, 2010)\n\nFeatures:\n\n  - use the env_file if possible instead of doing a runtime resolve\n     - huge speedup when calling Bundler.setup while locked\n     - ensures bundle exec is fast while locked\n     - regenerates env_file if it was generated by an older version\n  - update cached/packed gems when you update gems via bundle install\n\nBugfixes:\n\n  - prep for Rubygems 1.3.7 changes\n  - install command now pulls git branches correctly (#211)\n  - raise errors on invalid options in the Gemfile\n\n## 0.9.14 (March 30, 2010)\n\nFeatures:\n\n  - install command output vastly improved\n    - installation message now accurate, with \'using\' and \'installing\'\n    - bundler gems no longer listed as \'system gems\'\n  - show command output now includes sha and branch name for git gems\n  - init command now takes --gemspec option for bootstrapping gem Gemfiles\n  - Bundler.with_clean_env for shelling out to ruby scripts\n  - show command now aliased as \'list\'\n  - VISUAL env var respected for GUI editors\n\nBugfixes:\n\n  - exec command now finds binaries from gems with no gemspec\n  - note source of Gemfile resolver errors\n  - don\'t blow up if git urls are changed\n\n## 0.9.13 (March 23, 2010)\n\nBugfixes:\n\n  - exec command now finds binaries from gems installed via :path\n  - gem dependencies are pulled in even if their type is nil\n  - paths with spaces have double-quotes to work on Windows\n  - set GEM_PATH in environment.rb so generators work with Rails 2\n\n## 0.9.12 (March 17, 2010)\n\n  - refactoring, internal cleanup, more solid specs\n\nFeatures:\n\n  - check command takes a --without option\n  - check command exits 1 if the check fails\n\nBugfixes:\n\n  - perform a topological sort on resolved gems (#191)\n  - gems from git work even when paths or repos have spaces (#196)\n  - Specification#loaded_from returns a String, like Gem::Specification (#197)\n  - specs eval from inside the gem directory, even when locked\n  - virtual gemspecs are now saved in environment.rb for use when loading\n  - unify the Installer\'s local index and the runtime index (#204)\n\n## 0.9.11 (March 9, 2010)\n\n  - added roadmap with future development plans\n\nFeatures:\n\n  - install command can take the path to the gemfile with --gemfile (#125)\n  - unknown command line options are now rejected (#163)\n  - exec command hugely sped up while locked (#177)\n  - show command prints the install path if you pass it a gem name (#148)\n  - open command edits an installed gem with $EDITOR (#148)\n  - Gemfile allows assigning an array of groups to a gem (#114)\n  - Gemfile allows :tag option on :git sources\n  - improve backtraces when a gemspec is invalid\n  - improve performance by installing gems from the cache if present\n\nBugfixes:\n\n  - normalize parameters to Bundler.require (#153)\n  - check now checks installed gems rather than cached gems (#162)\n  - don\'t update the gem index when installing after locking (#169)\n  - bundle parenthesises arguments for 1.8.6 (#179)\n  - gems can now be assigned to multiple groups without problems (#135)\n  - fix the warning when building extensions for a gem from git with Rubygems 1.3.6\n  - fix a Dependency.to_yaml error due to accidentally including sources and groups\n  - don\'t reinstall packed gems\n  - fix gems with git sources that are private repositories\n\n## 0.9.10 (March 1, 2010)\n\n  - depends on Rubygems 1.3.6\n\nBugfixes:\n\n  - support locking after install --without\n  - don\'t reinstall gems from the cache if they\'re already in the bundle\n  - fixes for Ruby 1.8.7 and 1.9\n\n## 0.9.9 (February 25, 2010)\n\nBugfixes:\n\n  - don\'t die if GEM_HOME is an empty string\n  - fixes for Ruby 1.8.6 and 1.9\n\n## 0.9.8 (February 23, 2010)\n\nFeatures:\n\n  - pack command which both caches and locks\n  - descriptive error if a cached gem is missing\n  - remember the --without option after installing\n  - expand paths given in the Gemfile via the :path option\n  - add block syntax to the git and group options in the Gemfile\n  - support gems with extensions that don\'t admit they depend on rake\n  - generate gems using gem build gemspec so git gems can have native extensions\n  - print a useful warning if building a gem fails\n  - allow manual configuration via BUNDLE_PATH\n\nBugfixes:\n\n  - eval gemspecs in the gem directory so relative paths work\n  - make default spec for git sources valid\n  - don\'t reinstall gems that are already packed\n\n## 0.9.7 (February 17, 2010)\n\nBugfixes:\n\n  - don\'t say that a gem from an excluded group is \"installing\"\n  - improve crippling rubygems in locked scenarios\n\n## 0.9.6 (February 16, 2010)\n\nFeatures:\n\n  - allow String group names\n  - a number of improvements in the documentation and error messages\n\nBugfixes:\n\n  - set SourceIndex#spec_dirs to solve a problem involving Rails 2.3 in unlocked mode\n  - ensure Rubygems is fully loaded in Ruby 1.9 before patching it\n  - fix `bundle install` for a locked app without a .bundle directory\n  - require gems in the order that the resolver determines\n  - make the tests platform agnostic so we can confirm that they\'re green on JRuby\n  - fixes for Ruby 1.9\n\n## 0.9.5 (Feburary 12, 2010)\n\nFeatures:\n\n  - added support for :path => \"relative/path\"\n  - added support for older versions of git\n  - added `bundle install --disable-shared-gems`\n  - Bundler.require fails silently if a library does not have a file on the load path with its name\n  - Basic support for multiple rubies by namespacing the default bundle path using the version and engine\n\nBugfixes:\n\n  - if the bundle is locked and .bundle/environment.rb is not present when Bundler.setup is called, generate it\n  - same if it\'s not present with `bundle check`\n  - same if it\'s not present with `bundle install`\n',0,'2013-10-04 00:58:08','2013-10-04 11:39:28') /*... omitted ...*/\G
+
+# Query 3: 1.57k QPS, 0.07x concurrency, ID 0x8ED61FE2C1C9A2A1 at byte 147421074
+# Scores: V/M = 0.00
+# Time range: 2014-07-20 01:35:07 to 01:36:38
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count         94  143048
+# Exec time      8      7s    12us    22ms    47us   185us   150us    21us
+# Lock time     11    45ms       0     1ms       0       0     5us       0
+# Rows sent      0     754       0       1    0.01       0    0.07       0
+# Rows examine   0     754       0       1    0.01       0    0.07       0
+# Query size     3   5.55M      39      41   40.69   40.45    0.81   40.45
 # String:
 # Databases    isucon
 # Hosts        localhost
@@ -84,7 +116,7 @@ SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 1
 # Query_time distribution
 #   1us
 #  10us  ################################################################
-# 100us  #########
+# 100us  #######
 #   1ms  #
 #  10ms  #
 # 100ms
@@ -94,7 +126,7 @@ SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 1
 #    SHOW TABLE STATUS FROM `isucon` LIKE 'users'\G
 #    SHOW CREATE TABLE `isucon`.`users`\G
 # EXPLAIN /*!50100 PARTITIONS*/
-SELECT username FROM users WHERE id='143'\G
+SELECT username FROM users WHERE id='139'\G
 # *************************** 1. row ***************************
 #            id: 1
 #   select_type: SIMPLE
@@ -108,18 +140,185 @@ SELECT username FROM users WHERE id='143'\G
 #          rows: 1
 #         Extra: NULL
 
-# Query 3: 18.82 QPS, 0.03x concurrency, ID 0x08E3E2CA950A9030 at byte 32120
-# This item is included in the report because it matches --limit.
-# Scores: V/M = 0.01
-# Time range: 2014-07-19 16:54:31 to 16:55:33
+# Query 4: 0.38 QPS, 0.75x concurrency, ID 0x141F7DA30198D501 at byte 175428797
+# Scores: V/M = 0.00
+# Time range: 2014-07-20 01:48:53 to 01:49:01
 # Attribute    pct   total     min     max     avg     95%  stddev  median
 # ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0    1167
-# Exec time      3      2s    13us    30ms     2ms     9ms     3ms    26us
-# Lock time      7    22ms       0     2ms    18us    66us   104us       0
-# Rows sent      0     208       0       1    0.18    0.99    0.38       0
-# Rows examine  37   4.19M       0  20.67k   3.68k  20.37k   7.79k       0
-# Query size     1  56.98k      50      50      50      50       0      50
+# Count          0       3
+# Exec time      7      6s      2s      2s      2s      2s       0      2s
+# Lock time      0   108us    30us    41us    36us    40us     4us    36us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0     147      49      49      49      49       0      49
+# String:
+# Databases    test
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms
+# 100ms
+#    1s  ################################################################
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `test` LIKE 'async_test'\G
+#    SHOW CREATE TABLE `test`.`async_test`\G
+INSERT INTO async_test VALUES(SLEEP(2), '1', '2')\G
+
+# Query 5: 0.38 QPS, 0.75x concurrency, ID 0xF9A57DD5A41825CA at byte 175429027
+# Scores: V/M = 0.00
+# Time range: 2014-07-20 01:48:55 to 01:49:03
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0       3
+# Exec time      7      6s      2s      2s      2s      2s       0      2s
+# Lock time      0       0       0       0       0       0       0       0
+# Rows sent      0       3       1       1       1       1       0       1
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0      45      15      15      15      15       0      15
+# String:
+# Databases    test
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms
+# 100ms
+#    1s  ################################################################
+#  10s+
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT SLEEP(2)\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: NULL
+#    partitions: NULL
+#          type: NULL
+# possible_keys: NULL
+#           key: NULL
+#       key_len: NULL
+#           ref: NULL
+#          rows: NULL
+#         Extra: No tables used
+
+# Query 6: 1 QPS, 2.00x concurrency, ID 0x6CFE2C9224943DB4 at byte 175426605
+# Scores: V/M = 0.00
+# Time range: 2014-07-20 01:48:49 to 01:48:51
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0       2
+# Exec time      4      4s      2s      2s      2s      2s    12us      2s
+# Lock time      0   112us    39us    73us    56us    73us    24us    56us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0      92      46      46      46      46       0      46
+# String:
+# Databases    test
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms
+#  10ms
+# 100ms
+#    1s  ################################################################
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `test` LIKE 'async_test'\G
+#    SHOW CREATE TABLE `test`.`async_test`\G
+INSERT INTO async_test VALUES (SLEEP(2), 0, 0)\G
+
+# Query 7: 2.69 QPS, 0.02x concurrency, ID 0x00A4BF4929371F40 at byte 152061358
+# Scores: V/M = 0.31
+# Time range: 2014-07-20 01:35:07 to 01:36:38
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0     245
+# Exec time      2      2s     3ms   843ms     9ms     7ms    53ms     4ms
+# Lock time      4    18ms    45us   139us    74us    98us    14us    69us
+# Rows sent      0       0       0       0       0       0       0       0
+# Rows examine   0       0       0       0       0       0       0       0
+# Query size     0 101.75k     277     625  425.29  511.45   56.74  420.77
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us
+# 100us
+#   1ms  ################################################################
+#  10ms  #
+# 100ms  #
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+INSERT INTO memos (user, content, is_private, created_at) VALUES ('174', '# ruin-breathing capstan bolt clean-made head resistance heaven-built spade press\n\n## ghost world\n\n* bearer bar map lichen saw wrack Sidera lodoicea impedance drop wry-armed\n* tree pie bat-minded culture word quasi slander can hook\n* tap bolt hatching station dark-featured quasi delict\n\n```\nsky-capped band-shaped vitreous copper track shoe one-price```\n', '0', '2014-07-20 01:35:24')\G
+
+# Query 8: 14.37 QPS, 0.02x concurrency, ID 0x391C57CEB1157B93 at byte 155180786
+# Scores: V/M = 0.00
+# Time range: 2014-07-20 01:35:07 to 01:36:38
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0    1308
+# Exec time      2      2s    23us    45ms     1ms     3ms     2ms   925us
+# Lock time     10    43ms       0   145us    32us    98us    37us       0
+# Rows sent     30  56.26k       0     201   44.05  174.84   61.43       0
+# Rows examine   0  56.26k       0     201   44.05  174.84   61.43       0
+# Query size     0  72.42k      55      57   56.69   56.92       1   56.92
+# String:
+# Databases    isucon
+# Hosts        localhost
+# Users        isucon
+# Query_time distribution
+#   1us
+#  10us  ######################
+# 100us  ############################################
+#   1ms  ################################################################
+#  10ms  #
+# 100ms
+#    1s
+#  10s+
+# Tables
+#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
+#    SHOW CREATE TABLE `isucon`.`memos`\G
+# EXPLAIN /*!50100 PARTITIONS*/
+SELECT * FROM memos WHERE user='112'  ORDER BY created_at\G
+# *************************** 1. row ***************************
+#            id: 1
+#   select_type: SIMPLE
+#         table: memos
+#    partitions: NULL
+#          type: ref
+# possible_keys: memos_idx_user_created_at
+#           key: memos_idx_user_created_at
+#       key_len: 4
+#           ref: const
+#          rows: 143
+#         Extra: Using where
+
+# Query 9: 15.55 QPS, 0.02x concurrency, ID 0x08E3E2CA950A9030 at byte 165772768
+# Scores: V/M = 0.01
+# Time range: 2014-07-20 01:35:07 to 01:36:38
+# Attribute    pct   total     min     max     avg     95%  stddev  median
+# ============ === ======= ======= ======= ======= ======= ======= =======
+# Count          0    1415
+# Exec time      1      2s    16us    26ms     1ms     8ms     3ms    25us
+# Lock time      5    23ms       0     2ms    16us    63us    92us       0
+# Rows sent      0     235       0       1    0.17    0.99    0.37       0
+# Rows examine  35   4.62M       0  20.18k   3.34k  19.40k   7.22k       0
+# Query size     0  69.09k      50      50      50      50       0      50
 # String:
 # Databases    isucon
 # Hosts        localhost
@@ -128,8 +327,8 @@ SELECT username FROM users WHERE id='143'\G
 #   1us
 #  10us  ################################################################
 # 100us  #
-#   1ms  ##########
-#  10ms  ###
+#   1ms  ###########
+#  10ms  #
 # 100ms
 #    1s
 #  10s+
@@ -148,48 +347,5 @@ SELECT count(*) AS c FROM memos WHERE is_private=0\G
 #           key: memos_idx_is_private_created_at
 #       key_len: 1
 #           ref: const
-#          rows: 31059
+#          rows: 40740
 #         Extra: Using index
-
-# Query 4: 16.92 QPS, 0.02x concurrency, ID 0x391C57CEB1157B93 at byte 13111139
-# This item is included in the report because it matches --limit.
-# Scores: V/M = 0.00
-# Time range: 2014-07-19 16:54:32 to 16:55:33
-# Attribute    pct   total     min     max     avg     95%  stddev  median
-# ============ === ======= ======= ======= ======= ======= ======= =======
-# Count          0    1032
-# Exec time      2      1s    24us    13ms     1ms     3ms     1ms     1ms
-# Lock time     12    39ms       0   155us    37us   108us    41us       0
-# Rows sent     31  49.29k       0     206   48.91  183.58   65.09       0
-# Rows examine   0  49.29k       0     206   48.91  183.58   65.09       0
-# Query size     1  57.24k      55      57   56.79   56.92       1   56.92
-# String:
-# Databases    isucon
-# Hosts        localhost
-# Users        isucon
-# Query_time distribution
-#   1us
-#  10us  #####################
-# 100us  #######################################
-#   1ms  ################################################################
-#  10ms  #
-# 100ms
-#    1s
-#  10s+
-# Tables
-#    SHOW TABLE STATUS FROM `isucon` LIKE 'memos'\G
-#    SHOW CREATE TABLE `isucon`.`memos`\G
-# EXPLAIN /*!50100 PARTITIONS*/
-SELECT * FROM memos WHERE user='289'  ORDER BY created_at\G
-# *************************** 1. row ***************************
-#            id: 1
-#   select_type: SIMPLE
-#         table: memos
-#    partitions: NULL
-#          type: ref
-# possible_keys: memos_idx_user_created_at
-#           key: memos_idx_user_created_at
-#       key_len: 4
-#           ref: const
-#          rows: 170
-#         Extra: Using where

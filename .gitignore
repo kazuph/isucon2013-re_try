@@ -28,3 +28,4 @@ webapp/ruby/.bundle/
 webapp/ruby/vendor/
 xbuild/
 .gem
+.cpanm

@@ -20,5 +20,5 @@ alias b4="sudo isucon3 benchmark --workload 4 --init /home/isucon/init.sh"
 alias myre="sudo /etc/init.d/mysql restart"
 alias mys="mysqladmin -uisucon status | grep "
 alias myv="mysqladmin -uisucon variables | grep "
-alias pt="sudo pt-query-digest /tmp/mysql-slow.log --explain h=localhost,u=isucon --database=isucon | tee ptqd.log && sudo rm /tmp/mysql-slow.log && myre"
+alias pt="pt-query-digest /tmp/mysql-slow.log --explain h=localhost,u=isucon --database=isucon | tee ptqd.log"
 
