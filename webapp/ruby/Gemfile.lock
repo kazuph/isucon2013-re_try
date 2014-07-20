@@ -18,6 +18,7 @@ GEM
     rack-protection (1.5.3)
       rack
     raindrops (0.13.0)
+    redcarpet (3.1.2)
     sinatra (1.4.3)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -38,5 +39,6 @@ DEPENDENCIES
   foreman (= 0.63.0)
   json (= 1.8.0)
   mysql2-cs-bind (= 0.0.6)
+  redcarpet
   sinatra (= 1.4.3)
   unicorn (= 4.6.3)

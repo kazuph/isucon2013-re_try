@@ -6,9 +6,12 @@ require 'dalli'
 require 'rack/session/dalli'
 require 'erubis'
 require 'tempfile'
+require 'redcarpet'
 
 class Isucon3App < Sinatra::Base
   $stdout.sync = true
+  enable :logging
+
   use Rack::Session::Dalli, {
     :key => 'isucon_session',
     :cache => Dalli::Client.new('localhost:11212')
@@ -53,12 +56,7 @@ class Isucon3App < Sinatra::Base
     end
 
     def gen_markdown(md)
-      tmp = Tempfile.open("isucontemp")
-      tmp.puts(md)
-      tmp.close
-      html = `../bin/markdown #{tmp.path}`
-      tmp.unlink
-      return html
+      Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true).render(md)
     end
 
     def anti_csrf
@@ -176,7 +174,7 @@ class Isucon3App < Sinatra::Base
         halt 404, "404 Not Found"
       end
     end
-    memo["username"] = mysql.xquery('SELECT username FROM users WHERE id=?', memo["user"]).first["username"]
+    memo["username"] = user["username"]
     memo["content_html"] = gen_markdown(memo["content"])
     if user["id"] == memo["user"]
       cond = ""
@@ -186,6 +184,7 @@ class Isucon3App < Sinatra::Base
     memos = []
     older = nil
     newer = nil
+    b_time = Time.now
     results = mysql.xquery("SELECT * FROM memos WHERE user=? #{cond} ORDER BY id", memo["user"])
     results.each do |m|
       memos.push(m)
@@ -196,6 +195,7 @@ class Isucon3App < Sinatra::Base
         newer = memos[i + 1] if i < memos.count
       end
     end
+    logger.info "@@memo 6 #{Time.now - b_time}";b_time = Time.now
     erb :memo, :layout => :base, :locals => {
       :user  => user,
       :memo  => memo,
