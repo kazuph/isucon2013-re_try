@@ -44,24 +44,3 @@ alias myre="sudo /etc/init.d/mysql restart"
 EOF
 ```
 
-## 実行したコメントメモ
-
-### 設定ファイルをリポジトリ内に追加
-
-```
-mkdir misk
-cp /etc/supervisord.conf misc/
-cp /etc/nginx/nginx.conf misc/
-cp /usr/my.cnf misc/
-cp /etc/httpd/conf/httpd.conf misc/
-cp /etc/httpd/conf.d/isucon.conf misc/
-sudo ln -sfv /home/isucon/misc/my.cnf /usr/my.cnf
-sudo /etc/init.d/mysql restart
-```
-
-### mysqlのチューニング
-
-```
-wget https://raw.githubusercontent.com/major/MySQLTuner-perl/master/mysqltuner.pl
-perl mysqltuner.pl
-```
