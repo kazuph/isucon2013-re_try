@@ -2,7 +2,6 @@ local
 node_modules
 .bash_history
 .bash_logout
-.bash_profile
 .bashrc
 .kshrc
 .lesshst
@@ -28,3 +27,4 @@ tmp/
 webapp/ruby/.bundle/
 webapp/ruby/vendor/
 xbuild/
+.gem
