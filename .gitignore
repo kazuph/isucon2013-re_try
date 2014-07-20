@@ -29,4 +29,3 @@ webapp/ruby/vendor/
 xbuild/
 .gem
 .cpanm
-init.log
