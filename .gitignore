@@ -1,0 +1,30 @@
+local
+node_modules
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.kshrc
+.lesshst
+.mysql_history
+.subversion/
+.vim/
+.viminfo
+.ssh
+/org
+isucon2013-pre
+qualifier_bench
+# Created by http://www.gitignore.io
+
+### vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+tmp/
+webapp/ruby/.bundle/
+webapp/ruby/vendor/
+xbuild/
