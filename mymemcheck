@@ -1,0 +1,318 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+my @GLOBAL_BUFFERS = qw(
+    key_buffer_size
+    innodb_buffer_pool_size
+    innodb_log_buffer_size
+    innodb_additional_mem_pool_size
+    net_buffer_length
+);
+
+my @THREAD_BUFFERS = qw(
+    sort_buffer_size
+    myisam_sort_buffer_size
+    read_buffer_size
+    join_buffer_size
+    read_rnd_buffer_size
+);
+
+my @HEAP_LIMIT = qw(
+    innodb_buffer_pool_size
+    key_buffer_size
+    sort_buffer_size
+    read_buffer_size
+    read_rnd_buffer_size
+);
+
+my @INNODB_LOG_FILE = qw(innodb_buffer_pool_size innodb_log_files_in_group);
+my @OTHER_VARIABLES = qw(max_connections);
+
+my %DEFAULT_VALUES = (
+    'key_buffer_size'                 => 8388600,
+    'innodb_buffer_pool_size'         => 8388608,
+    'innodb_log_buffer_size'          => 1048576,
+    'innodb_additional_mem_pool_size' => 1048576,
+    'net_buffer_length'               => 16384,
+    'sort_buffer_size'                => 8388608,
+    'myisam_sort_buffer_size'         => 8388608,
+    'read_buffer_size'                => 131072,
+    'join_buffer_size'                => 131072,
+    'read_rnd_buffer_size'            => 262144,
+    'innodb_log_files_in_group'       => 2,
+    'max_connections'                 => 100,
+);
+
+my $TEMPLATE = get_data_section();
+
+MAIN: {
+    my $variables = read_variables();
+    report_minimal_memory($variables);
+    report_heap_limit($variables) if ~0 == 2**32-1;
+    report_innodb_log_file($variables);
+    exit 0;
+}
+
+sub read_cnf {
+    my $filename = shift;
+
+    open my $fh, '<', $filename or die qq{open: $! "$filename"};
+
+    my @content;
+    while (<$fh>) {
+        if ( my ($dir) = /!includedir\s+(\S+)/ ) {
+            opendir my $fh, $dir or die qq{opendir: $! "$dir"};
+            my @cnf = map "$dir/$_", sort grep /\.cnf$/, readdir $fh;
+            push @content, read_cnf($_) for @cnf;
+        }
+        elsif ( /!include\s+(\S+)/ ) {
+            push @content, read_cnf($1);
+        }
+        else {
+            push @content, $_;
+        }
+    }
+
+    return @content;
+}
+
+sub read_variables {
+    my $var;
+
+    my @content;
+    if ( defined $ARGV[0] && -r $ARGV[0] ) {
+        @content = read_cnf($ARGV[0]);
+    }
+    else {
+        @content = <STDIN>;
+    }
+
+    for ( @content ) {
+        next if /^#/;
+        chomp;
+        s/^\|\s+//;
+
+        if ( my ($name, $value) = split /[\s=|]+/ ) {
+            next unless defined $value;
+            $value =~ s/\s*\|\s*$//;
+            $value = to_byte($value) if $value =~ /[KMG]$/;
+            $name .= '_size' if $name =~ /buffer$/;
+
+            $var->{ $name } = $value;
+        }
+    }
+
+    for my $name ( keys %DEFAULT_VALUES ) {
+        unless ( exists $var->{ $name } ) {
+            $var->{ $name } = $DEFAULT_VALUES{ $name };
+        }
+    }
+
+    return $var;
+}
+
+sub report_minimal_memory {
+    my $var = shift;
+
+    my $global_buffer_size;
+    for my $key ( @GLOBAL_BUFFERS ) {
+        $global_buffer_size += $var->{ $key };
+    }
+
+    my $thread_buffer_size;
+    for my $key ( @THREAD_BUFFERS ) {
+        $thread_buffer_size += $var->{ $key };
+    }
+
+    my $minimal_memory = $global_buffer_size
+                       + $thread_buffer_size * $var->{'max_connections'};
+
+    my $global_buffers = '';
+    for my $key ( @GLOBAL_BUFFERS ) {
+        $global_buffers .= sprintf "  %-32s %12d  %12s\n",
+            $key, $var->{ $key }, add_unit($var->{ $key });
+    }
+
+    my $thread_buffers = '';
+    for my $key ( @THREAD_BUFFERS ) {
+        $thread_buffers .= sprintf "  %-32s %12d  %12s\n",
+            $key, $var->{ $key }, add_unit($var->{ $key });
+    }
+
+    my $max_connections = $var->{'max_connections'};
+
+    printf $TEMPLATE->{'minimal_memory'},
+        $global_buffers, add_unit($global_buffer_size),
+        $thread_buffers, add_unit($thread_buffer_size), $max_connections,
+        add_unit($global_buffer_size), add_unit($thread_buffer_size * $max_connections),
+        $minimal_memory, add_unit($minimal_memory);
+
+}
+
+sub report_heap_limit {
+    my $var = shift;
+
+    my $stack_size = 2 * 1024 ** 2;
+
+    my $heap_limit_size =
+          $var->{'innodb_buffer_pool_size'}
+        + $var->{'key_buffer_size'}
+        + $var->{'max_connections'} * ( $var->{'sort_buffer_size'}
+                                      + $var->{'read_buffer_size'}
+                                      + $var->{'binlog_cache_size'}
+                                      + $stack_size );
+
+    my $result = ( 2147483648 <= $heap_limit_size ) ? 'LIMIT OVER!!' : 'safe';
+
+    printf $TEMPLATE->{'heap_limit'},
+        @$var{qw(innodb_buffer_pool_size key_buffer_size max_connections)},
+        @$var{qw(sort_buffer_size read_buffer_size read_rnd_buffer_size max_connections)},
+        $stack_size, $heap_limit_size, add_unit($heap_limit_size), add_unit($heap_limit_size),
+        $result;
+}
+
+sub report_innodb_log_file {
+    my $var = shift;
+
+    my $max_innodb_log_file_size =
+        int($var->{'innodb_buffer_pool_size'} / $var->{'innodb_log_files_in_group'});
+    my $result = $var->{'innodb_log_file_size'} > $max_innodb_log_file_size
+                    ? 'LIMIT OVER!!' : 'safe';
+
+    printf $TEMPLATE->{'innodb_log_file'},
+        $var->{'innodb_buffer_pool_size'}, $var->{'innodb_log_files_in_group'},
+        $max_innodb_log_file_size, add_unit($max_innodb_log_file_size),
+        $var->{'innodb_log_file_size'}, $max_innodb_log_file_size,
+        add_unit($var->{'innodb_log_file_size'}),
+        add_unit($max_innodb_log_file_size),
+        $result;
+}
+
+sub to_byte {
+    my $str = shift;
+
+    my ($number, $unit) = $str =~ /^(\d+)([KMG])$/ or return;
+
+    my $power = ( $unit eq 'G' ) ? 3 : ( $unit eq 'M' ) ? 2 : ( $unit eq 'K' ) ? 1 : 0;
+
+    return $number * (1024 ** $power);
+}
+
+sub add_unit {
+    my $number = shift;
+
+    my $base = 0;
+    my $unit = '';
+
+    if ( $number > 1073741824 ) {
+        $base = 1073741824;
+        $unit = 'G';
+    }
+    elsif ( $number > 1048576 ) {
+        $base = 1048576;
+        $unit = 'M';
+    }
+    elsif ( $number > 1024 ) {
+        $base = 1024;
+        $unit = 'K';
+    }
+    else {
+        $base = 1;
+        $unit = '';
+    }
+
+    return sprintf '%.3f%s', $number / $base, $unit;
+}
+
+sub get_data_section {
+    my $content = join '', <DATA>;
+    my @data = split /^@@\s+(.+?)\s*\r?\n/m, $content;
+    shift @data; # trailing whitespaces
+
+    my $all = {};
+    while ( @data ) {
+        my ($name, $content) = splice @data, 0, 2;
+        $all->{ $name } = $content;
+    }
+
+    return $all;
+}
+
+=head1 NAME
+
+mymemcheck - check configuration parameter of MySQL
+
+=head1 SYNOPSIS
+
+  mymemcheck /etc/mysql/my.cnf
+  mymemcheck ~/my.cnf
+  mysql -e 'SHOW VARIABLES' | mymemcheck
+
+=head1 SEE ALSO
+
+L<http://dev.mysql.com/doc/refman/5.1/en/server-system-variables.html>
+L<http://dev.mysql.com/doc/refman/5.1/en/innodb-tuning.html>
+L<http://dev.mysql.com/doc/refman/5.1/en/innodb-configuration.html>
+
+=head1 AUTHOR
+
+HIROSE, Masaaki E<lt>hirose at klab dot orgE<gt>
+
+Craftworks E<lt>craftwork at cpan dot orgE<gt>
+
+=cut
+
+__DATA__
+@@ minimal_memory
+[ minimal memory ]============================================================
+ref
+  * ¡ØHigh Performance MySQL¡Ù, Solving Memory Bottlenecks, p125
+
+global_buffers
+%s  -----------------------------------------------------------
+                                          total  %12s
+
+thread_buffers
+%s  -----------------------------------------------------------
+                                          total  %12s
+
+max_connections                    %12d
+
+min_memory_needed = global_buffers + (thread_buffers * max_connections)
+                  = %s + %s
+                  = %lu (%s)
+
+@@ heap_limit
+[ 32bit Linux x86 limitation ]================================================
+ref
+  * http://dev.mysql.com/doc/mysql/en/innodb-configuration.html
+  * need to include read_rnd_buffer.
+  * no need myisam_sort_buffer because allocate when repair, check alter.
+
+          2G > process heap
+process heap = innodb_buffer_pool + key_buffer
+               + max_connections * (sort_buffer + read_buffer + read_rnd_buffer)
+               + max_connections * stack_size
+             = %d + %d
+               + %d * (%d + %d + %d)
+               + %d * %d
+             = %lu (%s)
+
+          2G > %s ... %s
+
+@@ innodb_log_file
+[ maximum size of innodb_log_file_size ]======================================
+ref
+  * http://dev.mysql.com/doc/mysql/en/innodb-start.html
+
+  1MB < innodb_log_file_size < MAX_innodb_log_file_size < 4GB
+
+MAX_innodb_log_file_size = innodb_buffer_pool_size * 1/innodb_log_files_in_group
+                         = %d * 1 / %d
+                         = %lu (%s)
+
+    innodb_log_file_size < MAX_innodb_log_file_size
+%24d < %lu
+%24s < %s ... %s
