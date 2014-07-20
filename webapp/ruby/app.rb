@@ -88,7 +88,7 @@ class Isucon3App < Sinatra::Base
 
     # TODO: N+1問題
     # memos = mysql.query("SELECT memos.*, users.username FROM memos JOIN users ON memos.user = users.id WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100")
-    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY created_at DESC LIMIT 100) AS tmp ON tmp.id = memos.id;")
+    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100) AS tmp ON tmp.id = memos.id;")
     erb :index, :layout => :base, :locals => {
       :memos => memos,
       :page  => 0,
@@ -104,7 +104,7 @@ class Isucon3App < Sinatra::Base
     page  = params["page"].to_i
     total = mysql.xquery('SELECT count(*) AS c FROM memos WHERE is_private=0').first["c"]
     # memos = mysql.xquery("SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET #{page * 100}")
-    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY created_at DESC LIMIT 100 OFFSET #{page * 100}) AS tmp ON tmp.id = memos.id;")
+    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT id FROM memos WHERE is_private=0 ORDER BY id DESC LIMIT 100 OFFSET #{page * 100}) AS tmp ON tmp.id = memos.id;")
     if memos.count == 0
       halt 404, "404 Not Found"
     end
@@ -156,7 +156,7 @@ class Isucon3App < Sinatra::Base
     user  = get_user
     require_user(user)
 
-    memos = mysql.xquery('SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user=? ORDER BY created_at DESC', user["id"])
+    memos = mysql.xquery('SELECT id, content, is_private, created_at, updated_at FROM memos WHERE user=? ORDER BY id DESC', user["id"])
     erb :mypage, :layout => :base, :locals => {
       :user  => user,
       :memos => memos,
@@ -186,7 +186,7 @@ class Isucon3App < Sinatra::Base
     memos = []
     older = nil
     newer = nil
-    results = mysql.xquery("SELECT * FROM memos WHERE user=? #{cond} ORDER BY created_at", memo["user"])
+    results = mysql.xquery("SELECT * FROM memos WHERE user=? #{cond} ORDER BY id", memo["user"])
     results.each do |m|
       memos.push(m)
     end
