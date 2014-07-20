@@ -82,14 +82,9 @@ class Isucon3App < Sinatra::Base
     mysql = connection
     user  = get_user
 
-    total = mysql.query("SELECT count(*) AS c FROM memos WHERE is_private=0").first["c"]
-
     # TODO: N+1問題
-    # memos = mysql.query("SELECT memos.*, users.username FROM memos JOIN users ON memos.user = users.id WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100")
-    #
-    #
-    public_count = mysql.query("SELECT cnt from public_count;").first['cnt']
-    memos = mysql.xquery("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos WHERE id BETWEEN ? AND ? ORDER BY id) AS tmp ON tmp.memo = memos.id;", public_count - 99, public_count)
+    total = mysql.query("SELECT cnt from public_count;").first['cnt']
+    memos = mysql.xquery("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos WHERE id BETWEEN ? AND ? ORDER BY id) AS tmp ON tmp.memo = memos.id;", total - 99, total)
     erb :index, :layout => :base, :locals => {
       :memos => memos,
       :page  => 0,
@@ -103,9 +98,8 @@ class Isucon3App < Sinatra::Base
     user  = get_user
 
     page  = params["page"].to_i
-    total = mysql.xquery('SELECT count(*) AS c FROM memos WHERE is_private=0').first["c"]
-    # memos = mysql.xquery("SELECT * FROM memos WHERE is_private=0 ORDER BY created_at DESC, id DESC LIMIT 100 OFFSET #{page * 100}")
-    memos = mysql.query("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos ORDER BY id DESC LIMIT 100 OFFSET #{page * 100}) AS tmp ON tmp.memo = memos.id;")
+    total = mysql.query("SELECT cnt from public_count;").first['cnt']
+    memos = mysql.xquery("SELECT memos.*,users.username FROM memos JOIN users ON users.id = memos.user JOIN (SELECT memo FROM public_memos WHERE id BETWEEN ? AND ? ORDER BY id DESC) AS tmp ON tmp.memo = memos.id;", total - 99 - page * 100, total - page * 100)
     if memos.count == 0
       halt 404, "404 Not Found"
     end
